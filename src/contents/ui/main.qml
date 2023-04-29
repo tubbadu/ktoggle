@@ -46,8 +46,14 @@ Kirigami.ApplicationWindow {
 		}
 
 		onAction: {
-			console.warn("action " + actions.keys)
+			//console.warn("action " + actions.keys)
 			execute[action.text]();
+			console.warn("done")
+		}
+
+		onClicked: {
+			console.warn("clicked")
+			e.toggle()
 		}
 	}
 
@@ -57,21 +63,13 @@ Kirigami.ApplicationWindow {
 		property string pcmd: "kate"
 
 		Component.onCompleted:{
+			//launch("kate")
 			setPosition(0, 0)
+			
 			setSize(800, 600)
 			if(!embed(pcmd, pclass)){
 				Qt.quit()
 			}
-		}
-	}
-
-	Timer{
-		interval: 5000
-		running: !true
-		repeat: true
-		onTriggered:{
-			console.warn("t")
-			e.toggle()
 		}
 	}
 }

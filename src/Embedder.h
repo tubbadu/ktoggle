@@ -17,7 +17,9 @@
 #include <KWindowSystem>
 #include <KX11Extras>
 #include <KWindowInfo>
-
+#include <QDateTime>
+#include <QRegularExpression>
+#include <QCoreApplication>
 
 class Embedder : public QObject
 {
@@ -37,6 +39,7 @@ public:
 	Q_INVOKABLE void toggle();
 	Q_INVOKABLE void show();
 	Q_INVOKABLE void hide();
+	Q_INVOKABLE QStringList kwin_getWindowList();
 
 
 
@@ -46,6 +49,8 @@ public:
 private:
     QProcess *m_process;
 	MainWindow *m_parentWindow;
+	QWindow *m_window;
+	QWidget *m_container;
 	int m_wid;
 	QSize m_size;
 	QPoint m_pos;

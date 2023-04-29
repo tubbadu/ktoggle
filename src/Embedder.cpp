@@ -99,12 +99,11 @@ int Embedder::xdotoolGetId(const QString &Class){
 }
 
 int Embedder::kwinGetId(const QString &Class){
-	QList<WId> windows = KWindowSystem::windows();
 	//for (auto it = windows.rend(); it != windows.rbegin(); --it) {
-	for (WId window : windows) {
-		//WId window = *it;
+	for (auto w : kwin_getWindowList()) {
+		WId window = w.toInt();
 		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
-		qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
+		//qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
 		if(windoInfo.windowClassName() == Class){
 			return window;
 		}
@@ -112,14 +111,15 @@ int Embedder::kwinGetId(const QString &Class){
 	return -1;
 }
 
+
+
 int Embedder::getId(const QString &Class){
 	if(m_forceMethod == "xdotool"){
 		return xdotoolGetId(Class);
 	} else if (m_forceMethod == "kwin"){
 		return kwinGetId(Class);
 	} else if(m_forceMethod == ""){
-		if(KWindowSystem::isPlatformX11()){
-			qWarning() << "kwin";
+		if(KWindowSystem::isPlatformX11()){ // TODO tidy up
 			return kwinGetId(Class);
 		} else {
 			qWarning() << "Error: Currently unsupported on this platform";
@@ -137,6 +137,7 @@ void Embedder::toggle(){
 void Embedder::show(){
 	m_parentWindow->show();
 	m_parentWindow->activateWindow();
+
 }
 void Embedder::hide(){
 	m_parentWindow->hide();
@@ -149,9 +150,46 @@ void Embedder::setPosition(const int &x, const int &y){
 	m_pos = QPoint(x, y);
 }
 
+QStringList Embedder::kwin_getWindowList(){
+	QDateTime datetime_now = QDateTime::currentDateTime();
+	QString since = datetime_now.toString(Qt::ISODateWithMs).replace("T", " ");
+
+	QProcess *kwin = new QProcess;
+	QString filename = QCoreApplication::applicationDirPath() + "/listWindows.js";
+	kwin->setProgram("dbus-send");
+	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/Scripting" << "org.kde.kwin.Scripting.loadScript" << "string:" + filename);
+	kwin->start();
+	kwin->waitForFinished();
+
+    QString output = QString::fromLocal8Bit(kwin->readAllStandardOutput());
+	QString script_number = output.trimmed().split(" ").constLast();
+
+	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.run");
+	kwin->start(); 
+	kwin->waitForFinished();
+	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.stop");
+	kwin->start(); 
+	kwin->waitForFinished();
+	
+	kwin->setProgram("journalctl");
+	kwin->setArguments(QStringList() << "/usr/bin/kwin_x11" << "--since" << since);
+	kwin->start();
+	kwin->waitForFinished();
+
+	QRegularExpression regex("^.*: js: >", QRegularExpression::MultilineOption);
+    QStringList res = QString::fromLocal8Bit(kwin->readAllStandardOutput()).trimmed().replace(regex, "").split("\n");
+	return res;
+}
+
 
 bool Embedder::embed(const QString &program, const QString &Class)
 {
+/*	m_parentWindow->move(m_pos);
+	m_parentWindow->resize(m_size);
+	m_parentWindow->show();
+	return true;*/
+
+
 	m_wid = getId(Class);
 	if(m_wid < 1){
 		// launch
@@ -165,12 +203,12 @@ bool Embedder::embed(const QString &program, const QString &Class)
 	m_parentWindow->move(m_pos);
 	m_parentWindow->resize(m_size);
 
-	QWindow *window = QWindow::fromWinId(m_wid);
-	window->setFlags(Qt::FramelessWindowHint);
-	QWidget *container = QWidget::createWindowContainer(window);
-	m_parentWindow->setCentralWidget(container);	
-	container->show();
-	window->show();
+	m_window = QWindow::fromWinId(m_wid);
+	m_window->setFlags(Qt::FramelessWindowHint);
+	m_container = QWidget::createWindowContainer(m_window);
+	m_parentWindow->setCentralWidget(m_container);
+	m_container->show();
+	m_window->show();
 	m_parentWindow->show();
 
 	return true;

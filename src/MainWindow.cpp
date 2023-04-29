@@ -34,7 +34,7 @@ void MainWindow::toggle(){
 		hide();
 	} else {
 		// activate
-		setWindowState(Qt::WindowNoState);
+		//setWindowState(Qt::WindowNoState);
 		show();
 		activateWindow();
 	}

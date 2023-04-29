@@ -8,6 +8,7 @@ TrayIcon::TrayIcon(QObject *parent) :
 {
 	m_trayicon->setContextMenu(m_menu);
 	connect(m_menu, &QMenu::triggered, this, &TrayIcon::action);
+	connect(m_trayicon, &QSystemTrayIcon::activated, this, &TrayIcon::clicked);
 }
 
 void TrayIcon::setActions(const QStringList &actions){

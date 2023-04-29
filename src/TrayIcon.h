@@ -45,6 +45,7 @@ public:
 
 signals:
 	void action(QAction *action);
+	void clicked();
 
 
 
