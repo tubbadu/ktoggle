@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../lib/libSingleApplication.a CMakeFiles/SingleApplication.dir/SingleApplication_autogen/mocs_compilation.cpp.o CMakeFiles/SingleApplication.dir/singleapplication.cpp.o CMakeFiles/SingleApplication.dir/singleapplication_p.cpp.o
-/usr/bin/ranlib ../../lib/libSingleApplication.a
