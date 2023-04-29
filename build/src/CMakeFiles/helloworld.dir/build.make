@@ -74,7 +74,7 @@ src/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp: src/CMakeFiles/helloworld_a
 src/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp: /home/tubbadu/code/Kirigami/ktoggle/src/contents/ui/main.qml
 src/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp: /usr/lib64/qt5/bin/rcc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources.qrc"
-	cd /home/tubbadu/code/Kirigami/ktoggle/build/src && /usr/bin/cmake -E cmake_autorcc /home/tubbadu/code/Kirigami/ktoggle/build/src/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json 
+	cd /home/tubbadu/code/Kirigami/ktoggle/build/src && /usr/bin/cmake -E cmake_autorcc /home/tubbadu/code/Kirigami/ktoggle/build/src/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Debug
 
 src/CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.o: src/CMakeFiles/helloworld.dir/flags.make
 src/CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.o: src/helloworld_autogen/mocs_compilation.cpp
@@ -195,6 +195,8 @@ bin/helloworld: src/CMakeFiles/helloworld.dir/Embedder.cpp.o
 bin/helloworld: src/CMakeFiles/helloworld.dir/MainWindow.cpp.o
 bin/helloworld: src/CMakeFiles/helloworld.dir/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp.o
 bin/helloworld: src/CMakeFiles/helloworld.dir/build.make
+bin/helloworld: lib/libSingleApplication.a
+bin/helloworld: /usr/lib64/libX11.so
 bin/helloworld: src/CMakeFiles/helloworld.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable ../bin/helloworld"
 	cd /home/tubbadu/code/Kirigami/ktoggle/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/helloworld.dir/link.txt --verbose=$(VERBOSE)

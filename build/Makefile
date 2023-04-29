@@ -178,6 +178,32 @@ helloworld_autogen/fast:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/helloworld_autogen.dir/build.make src/CMakeFiles/helloworld_autogen.dir/build
 .PHONY : helloworld_autogen/fast
 
+#=============================================================================
+# Target rules for targets named SingleApplication
+
+# Build rule for target.
+SingleApplication: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SingleApplication
+.PHONY : SingleApplication
+
+# fast build rule for target.
+SingleApplication/fast:
+	$(MAKE) $(MAKESILENT) -f src/SingleApplication/CMakeFiles/SingleApplication.dir/build.make src/SingleApplication/CMakeFiles/SingleApplication.dir/build
+.PHONY : SingleApplication/fast
+
+#=============================================================================
+# Target rules for targets named SingleApplication_autogen
+
+# Build rule for target.
+SingleApplication_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SingleApplication_autogen
+.PHONY : SingleApplication_autogen
+
+# fast build rule for target.
+SingleApplication_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f src/SingleApplication/CMakeFiles/SingleApplication_autogen.dir/build.make src/SingleApplication/CMakeFiles/SingleApplication_autogen.dir/build
+.PHONY : SingleApplication_autogen/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -187,9 +213,11 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... SingleApplication_autogen"
 	@echo "... fetch-translations"
 	@echo "... helloworld_autogen"
 	@echo "... uninstall"
+	@echo "... SingleApplication"
 	@echo "... helloworld"
 .PHONY : help
 

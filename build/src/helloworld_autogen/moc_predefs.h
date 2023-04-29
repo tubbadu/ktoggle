@@ -56,7 +56,6 @@
 #define __FLT64X_MAX_10_EXP__ 4932
 #define __cpp_if_constexpr 201606L
 #define __LDBL_IS_IEC_60559__ 2
-#define QT_NO_DEBUG 1
 #define __FLT64X_HAS_QUIET_NAN__ 1
 #define __UINT_LEAST8_MAX__ 0xff
 #define __GCC_ATOMIC_BOOL_LOCK_FREE 2
@@ -306,6 +305,7 @@
 #define __cpp_guaranteed_copy_elision 201606L
 #define linux 1
 #define __FLT64_HAS_QUIET_NAN__ 1
+#define QAPPLICATION_CLASS QApplication
 #define __FLT32_MIN_10_EXP__ (-37)
 #define __EXCEPTIONS 1
 #define __PTRDIFF_WIDTH__ 64

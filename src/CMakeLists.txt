@@ -1,3 +1,6 @@
+set(QAPPLICATION_CLASS QApplication)
+add_subdirectory(./SingleApplication)
+
 add_executable(helloworld
 	main.cpp
 	resources.qrc
@@ -6,8 +9,12 @@ add_executable(helloworld
 	Embedder.cpp
 	MainWindow.cpp
 )
+
+
 find_package(KF5IconThemes)
 find_package(Qt5 COMPONENTS Core Gui Quick QuickWidgets WaylandCompositor REQUIRED)
+find_package(KF5 REQUIRED COMPONENTS WindowSystem)
+
 
 target_link_libraries(helloworld
 	Qt5::Quick
@@ -20,4 +27,6 @@ target_link_libraries(helloworld
 	KF5::Kirigami2
 	KF5::I18n
 	KF5::IconThemes
+	SingleApplication::SingleApplication
+	KF5::WindowSystem
 ) 

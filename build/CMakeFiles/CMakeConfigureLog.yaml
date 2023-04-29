@@ -605,3 +605,177 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckLibraryExists.cmake:71 (try_compile)"
+      - "/usr/share/cmake/Modules/FindX11.cmake:498 (check_library_exists)"
+      - "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfig.cmake:45 (find_dependency)"
+      - "src/CMakeLists.txt:16 (find_package)"
+    checks:
+      - "Looking for XOpenDisplay in /usr/lib64/libX11.so;/usr/lib64/libXext.so"
+    directories:
+      source: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-RW2KAg"
+      binary: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-RW2KAg"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--enable-new-dtags "
+      CMAKE_MODULE_PATH: "/usr/share/ECM/modules/;/usr/share/ECM/find-modules/;/usr/share/ECM/kde-modules/"
+    buildResult:
+      variable: "X11_LIB_X11_SOLO"
+      cached: true
+      stdout: |
+        Change Dir: /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-RW2KAg
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_4829f/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_4829f.dir/build.make CMakeFiles/cmTC_4829f.dir/build
+        gmake[1]: ingresso nella directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-RW2KAg»
+        Building C object CMakeFiles/cmTC_4829f.dir/CheckFunctionExists.c.o
+        /usr/bin/cc -D_GNU_SOURCE -D_LARGEFILE64_SOURCE  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=XOpenDisplay -std=gnu90 -o CMakeFiles/cmTC_4829f.dir/CheckFunctionExists.c.o -c /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-RW2KAg/CheckFunctionExists.c
+        Linking C executable cmTC_4829f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4829f.dir/link.txt --verbose=1
+        /usr/bin/cc  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=XOpenDisplay -Wl,--enable-new-dtags   CMakeFiles/cmTC_4829f.dir/CheckFunctionExists.c.o -o cmTC_4829f  /usr/lib64/libX11.so /usr/lib64/libXext.so 
+        gmake[1]: uscita dalla directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-RW2KAg»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "/usr/share/cmake/Modules/FindX11.cmake:513 (check_function_exists)"
+      - "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfig.cmake:45 (find_dependency)"
+      - "src/CMakeLists.txt:16 (find_package)"
+    checks:
+      - "Looking for gethostbyname"
+    directories:
+      source: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-ZymEWv"
+      binary: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-ZymEWv"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--enable-new-dtags "
+      CMAKE_MODULE_PATH: "/usr/share/ECM/modules/;/usr/share/ECM/find-modules/;/usr/share/ECM/kde-modules/"
+    buildResult:
+      variable: "CMAKE_HAVE_GETHOSTBYNAME"
+      cached: true
+      stdout: |
+        Change Dir: /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-ZymEWv
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_f5c9f/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f5c9f.dir/build.make CMakeFiles/cmTC_f5c9f.dir/build
+        gmake[1]: ingresso nella directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-ZymEWv»
+        Building C object CMakeFiles/cmTC_f5c9f.dir/CheckFunctionExists.c.o
+        /usr/bin/cc -D_GNU_SOURCE -D_LARGEFILE64_SOURCE  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=gethostbyname -std=gnu90 -o CMakeFiles/cmTC_f5c9f.dir/CheckFunctionExists.c.o -c /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-ZymEWv/CheckFunctionExists.c
+        Linking C executable cmTC_f5c9f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f5c9f.dir/link.txt --verbose=1
+        /usr/bin/cc  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=gethostbyname -Wl,--enable-new-dtags   CMakeFiles/cmTC_f5c9f.dir/CheckFunctionExists.c.o -o cmTC_f5c9f 
+        gmake[1]: uscita dalla directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-ZymEWv»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "/usr/share/cmake/Modules/FindX11.cmake:527 (check_function_exists)"
+      - "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfig.cmake:45 (find_dependency)"
+      - "src/CMakeLists.txt:16 (find_package)"
+    checks:
+      - "Looking for connect"
+    directories:
+      source: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-BxdxAX"
+      binary: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-BxdxAX"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--enable-new-dtags "
+      CMAKE_MODULE_PATH: "/usr/share/ECM/modules/;/usr/share/ECM/find-modules/;/usr/share/ECM/kde-modules/"
+    buildResult:
+      variable: "CMAKE_HAVE_CONNECT"
+      cached: true
+      stdout: |
+        Change Dir: /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-BxdxAX
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_7fd5d/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_7fd5d.dir/build.make CMakeFiles/cmTC_7fd5d.dir/build
+        gmake[1]: ingresso nella directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-BxdxAX»
+        Building C object CMakeFiles/cmTC_7fd5d.dir/CheckFunctionExists.c.o
+        /usr/bin/cc -D_GNU_SOURCE -D_LARGEFILE64_SOURCE  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=connect -std=gnu90 -o CMakeFiles/cmTC_7fd5d.dir/CheckFunctionExists.c.o -c /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-BxdxAX/CheckFunctionExists.c
+        Linking C executable cmTC_7fd5d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7fd5d.dir/link.txt --verbose=1
+        /usr/bin/cc  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=connect -Wl,--enable-new-dtags   CMakeFiles/cmTC_7fd5d.dir/CheckFunctionExists.c.o -o cmTC_7fd5d 
+        gmake[1]: uscita dalla directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-BxdxAX»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "/usr/share/cmake/Modules/FindX11.cmake:536 (check_function_exists)"
+      - "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfig.cmake:45 (find_dependency)"
+      - "src/CMakeLists.txt:16 (find_package)"
+    checks:
+      - "Looking for remove"
+    directories:
+      source: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-uB62Fs"
+      binary: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-uB62Fs"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--enable-new-dtags "
+      CMAKE_MODULE_PATH: "/usr/share/ECM/modules/;/usr/share/ECM/find-modules/;/usr/share/ECM/kde-modules/"
+    buildResult:
+      variable: "CMAKE_HAVE_REMOVE"
+      cached: true
+      stdout: |
+        Change Dir: /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-uB62Fs
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_fe81c/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_fe81c.dir/build.make CMakeFiles/cmTC_fe81c.dir/build
+        gmake[1]: ingresso nella directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-uB62Fs»
+        Building C object CMakeFiles/cmTC_fe81c.dir/CheckFunctionExists.c.o
+        /usr/bin/cc -D_GNU_SOURCE -D_LARGEFILE64_SOURCE  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=remove -std=gnu90 -o CMakeFiles/cmTC_fe81c.dir/CheckFunctionExists.c.o -c /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-uB62Fs/CheckFunctionExists.c
+        Linking C executable cmTC_fe81c
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe81c.dir/link.txt --verbose=1
+        /usr/bin/cc  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=remove -Wl,--enable-new-dtags   CMakeFiles/cmTC_fe81c.dir/CheckFunctionExists.c.o -o cmTC_fe81c 
+        gmake[1]: uscita dalla directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-uB62Fs»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "/usr/share/cmake/Modules/FindX11.cmake:545 (check_function_exists)"
+      - "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfig.cmake:45 (find_dependency)"
+      - "src/CMakeLists.txt:16 (find_package)"
+    checks:
+      - "Looking for shmat"
+    directories:
+      source: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-Fu3PiG"
+      binary: "/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-Fu3PiG"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--enable-new-dtags "
+      CMAKE_MODULE_PATH: "/usr/share/ECM/modules/;/usr/share/ECM/find-modules/;/usr/share/ECM/kde-modules/"
+    buildResult:
+      variable: "CMAKE_HAVE_SHMAT"
+      cached: true
+      stdout: |
+        Change Dir: /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-Fu3PiG
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_b6b47/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b6b47.dir/build.make CMakeFiles/cmTC_b6b47.dir/build
+        gmake[1]: ingresso nella directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-Fu3PiG»
+        Building C object CMakeFiles/cmTC_b6b47.dir/CheckFunctionExists.c.o
+        /usr/bin/cc -D_GNU_SOURCE -D_LARGEFILE64_SOURCE  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=shmat -std=gnu90 -o CMakeFiles/cmTC_b6b47.dir/CheckFunctionExists.c.o -c /home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-Fu3PiG/CheckFunctionExists.c
+        Linking C executable cmTC_b6b47
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b6b47.dir/link.txt --verbose=1
+        /usr/bin/cc  -fno-common -Wall -Wextra -Wcast-align -Wchar-subscripts -Wformat-security -Wno-long-long -Wpointer-arith -Wundef -Wmissing-format-attribute -Wwrite-strings -Werror=implicit-function-declaration -DCHECK_FUNCTION_EXISTS=shmat -Wl,--enable-new-dtags   CMakeFiles/cmTC_b6b47.dir/CheckFunctionExists.c.o -o cmTC_b6b47 
+        gmake[1]: uscita dalla directory «/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles/CMakeScratch/TryCompile-Fu3PiG»
+        
+      exitCode: 0
+...

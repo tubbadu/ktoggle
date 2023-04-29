@@ -289,6 +289,22 @@ src/CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt5/QtCore/qfiledevice.h /usr/include/qt5/QtGui/qvector2d.h \
  /usr/include/qt5/QtGui/qtouchdevice.h /usr/include/qt5/QtGui/QCloseEvent \
  /usr/include/qt5/QtCore/QEvent \
+ /usr/include/KF5/KWindowSystem/KWindowSystem \
+ /usr/include/KF5/KWindowSystem/kwindowsystem.h \
+ /usr/include/qt5/QtGui/QWidgetList /usr/include/qt5/QtGui/qwindowdefs.h \
+ /usr/include/KF5/KWindowSystem/kwindowinfo.h \
+ /usr/include/qt5/QtCore/QExplicitlySharedDataPointer \
+ /usr/include/qt5/QtCore/qshareddata.h \
+ /usr/include/qt5/QtCore/QStringList \
+ /usr/include/qt5/QtCore/qstringlist.h \
+ /usr/include/KF5/KWindowSystem/kwindowsystem_export.h \
+ /usr/include/KF5/KWindowSystem/netwm_def.h \
+ /usr/include/qt5/QtCore/QFlags /usr/include/qt5/QtCore/qflags.h \
+ /usr/include/KF5/KWindowSystem/KX11Extras \
+ /usr/include/KF5/KWindowSystem/kx11extras.h \
+ /usr/include/KF5/KWindowSystem/netwm_def.h \
+ /usr/include/KF5/KWindowSystem/KWindowInfo \
+ /usr/include/KF5/KWindowSystem/kwindowinfo.h \
  /home/tubbadu/code/Kirigami/ktoggle/build/src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp \
  /home/tubbadu/code/Kirigami/ktoggle/build/src/helloworld_autogen/EWIEGA46WW/../../../../src/MainWindow.h \
  /home/tubbadu/code/Kirigami/ktoggle/build/src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp \
@@ -302,8 +318,7 @@ src/CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.o: \
  /usr/include/KF5/KIconThemes/KIconLoader \
  /usr/include/KF5/KIconThemes/kiconloader.h \
  /usr/include/qt5/QtCore/QString /usr/include/qt5/QtCore/qstring.h \
- /usr/include/qt5/QtCore/QStringList \
- /usr/include/qt5/QtCore/qstringlist.h /usr/include/c++/12/optional \
+ /usr/include/c++/12/optional \
  /usr/include/KF5/KIconThemes/kiconthemes_export.h \
  /home/tubbadu/code/Kirigami/ktoggle/build/src/helloworld_autogen/EWIEGA46WW/moc_launcher.cpp \
  /home/tubbadu/code/Kirigami/ktoggle/build/src/helloworld_autogen/EWIEGA46WW/../../../../src/launcher.h

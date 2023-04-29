@@ -209,10 +209,17 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: \
  /usr/include/qt5/QtCore/qvariant.h /usr/include/qt5/QtCore/qmap.h \
  /usr/include/qt5/QtCore/qhash.h /usr/include/c++/12/variant \
  /usr/include/qt5/QtCore/qshareddata.h \
- /usr/include/qt5/QtQml/QQmlApplicationEngine \
- /usr/include/qt5/QtQml/qqmlapplicationengine.h \
- /usr/include/qt5/QtQml/qqmlengine.h /usr/include/qt5/QtCore/qurl.h \
- /usr/include/qt5/QtQml/qjsengine.h \
+ /home/tubbadu/code/Kirigami/ktoggle/src/SingleApplication/singleapplication.h \
+ /usr/include/qt5/QtCore/QtGlobal /usr/include/qt5/QtCore/qglobal.h \
+ /usr/include/qt5/QtNetwork/QLocalSocket \
+ /usr/include/qt5/QtNetwork/qlocalsocket.h \
+ /usr/include/qt5/QtNetwork/qtnetworkglobal.h \
+ /usr/include/qt5/QtNetwork/qtnetwork-config.h \
+ /usr/include/qt5/QtCore/qiodevice.h \
+ /usr/include/qt5/QtNetwork/qabstractsocket.h \
+ /usr/include/qt5/QtCore/qdebug.h /usr/include/qt5/QtCore/qtextstream.h \
+ /usr/include/qt5/QtCore/qset.h \
+ /usr/include/qt5/QtCore/qcontiguouscache.h \
  /usr/include/qt5/QtCore/qsharedpointer.h \
  /usr/include/qt5/QtCore/qsharedpointer_impl.h /usr/include/c++/12/memory \
  /usr/include/c++/12/bits/stl_raw_storage_iter.h \
@@ -223,22 +230,20 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: \
  /usr/include/c++/12/bits/shared_ptr_atomic.h \
  /usr/include/c++/12/backward/auto_ptr.h \
  /usr/include/c++/12/pstl/glue_memory_defs.h \
- /usr/include/qt5/QtQml/qjsvalue.h /usr/include/qt5/QtQml/qtqmlglobal.h \
- /usr/include/qt5/QtQml/qtqml-config.h \
- /usr/include/qt5/QtNetwork/qtnetworkglobal.h \
- /usr/include/qt5/QtNetwork/qtnetwork-config.h \
- /usr/include/qt5/QtQml/qqmldebug.h /usr/include/qt5/QtQml/qqml.h \
- /usr/include/qt5/QtQml/qqmlprivate.h \
+ /usr/include/qt5/QtQml/QQmlApplicationEngine \
+ /usr/include/qt5/QtQml/qqmlapplicationengine.h \
+ /usr/include/qt5/QtQml/qqmlengine.h /usr/include/qt5/QtCore/qurl.h \
+ /usr/include/qt5/QtQml/qjsengine.h /usr/include/qt5/QtQml/qjsvalue.h \
+ /usr/include/qt5/QtQml/qtqmlglobal.h \
+ /usr/include/qt5/QtQml/qtqml-config.h /usr/include/qt5/QtQml/qqmldebug.h \
+ /usr/include/qt5/QtQml/qqml.h /usr/include/qt5/QtQml/qqmlprivate.h \
  /usr/include/qt5/QtQml/qqmlparserstatus.h \
  /usr/include/qt5/QtQml/qqmllist.h \
  /usr/include/qt5/QtQml/qqmlpropertyvaluesource.h \
  /usr/include/qt5/QtCore/qpointer.h /usr/include/qt5/QtCore/qmetaobject.h \
- /usr/include/qt5/QtCore/qdebug.h /usr/include/qt5/QtCore/qtextstream.h \
- /usr/include/qt5/QtCore/qiodevice.h /usr/include/qt5/QtCore/qset.h \
- /usr/include/qt5/QtCore/qcontiguouscache.h \
  /usr/include/qt5/QtQml/qqmlerror.h /usr/include/qt5/QtQml/QtQml \
  /usr/include/qt5/QtQml/QtQmlDepends /usr/include/qt5/QtCore/QtCore \
- /usr/include/qt5/QtCore/QtCoreDepends /usr/include/qt5/QtCore/qglobal.h \
+ /usr/include/qt5/QtCore/QtCoreDepends \
  /usr/include/qt5/QtCore/qabstractanimation.h \
  /usr/include/qt5/QtCore/qabstracteventdispatcher.h \
  /usr/include/qt5/QtCore/qabstractitemmodel.h \
@@ -462,7 +467,6 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: \
  /usr/include/qt5/QtNetwork/qdtls.h \
  /usr/include/qt5/QtNetwork/qsslsocket.h \
  /usr/include/qt5/QtNetwork/qtcpsocket.h \
- /usr/include/qt5/QtNetwork/qabstractsocket.h \
  /usr/include/qt5/QtNetwork/qsslerror.h \
  /usr/include/qt5/QtNetwork/qsslcertificate.h \
  /usr/include/qt5/QtNetwork/qssl.h /usr/include/qt5/QtCore/QFlags \
@@ -476,7 +480,6 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: \
  /usr/include/qt5/QtNetwork/QNetworkRequest \
  /usr/include/qt5/QtNetwork/qnetworkrequest.h \
  /usr/include/qt5/QtNetwork/qlocalserver.h \
- /usr/include/qt5/QtNetwork/qlocalsocket.h \
  /usr/include/qt5/QtNetwork/qnetworkaccessmanager.h \
  /usr/include/qt5/QtCore/QVector \
  /usr/include/qt5/QtNetwork/QSslConfiguration \
@@ -629,4 +632,16 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: \
  /usr/include/qt5/QtGui/qkeysequence.h /usr/include/qt5/QtGui/QKeyEvent \
  /usr/include/qt5/QtGui/qevent.h /usr/include/qt5/QtGui/qvector2d.h \
  /usr/include/qt5/QtGui/qtouchdevice.h /usr/include/qt5/QtGui/QCloseEvent \
- /usr/include/qt5/QtCore/QEvent
+ /usr/include/qt5/QtCore/QEvent \
+ /usr/include/KF5/KWindowSystem/KWindowSystem \
+ /usr/include/KF5/KWindowSystem/kwindowsystem.h \
+ /usr/include/qt5/QtGui/QWidgetList /usr/include/qt5/QtGui/qwindowdefs.h \
+ /usr/include/KF5/KWindowSystem/kwindowinfo.h \
+ /usr/include/qt5/QtCore/QExplicitlySharedDataPointer \
+ /usr/include/KF5/KWindowSystem/kwindowsystem_export.h \
+ /usr/include/KF5/KWindowSystem/netwm_def.h \
+ /usr/include/qt5/QtCore/QFlags /usr/include/KF5/KWindowSystem/KX11Extras \
+ /usr/include/KF5/KWindowSystem/kx11extras.h \
+ /usr/include/KF5/KWindowSystem/netwm_def.h \
+ /usr/include/KF5/KWindowSystem/KWindowInfo \
+ /usr/include/KF5/KWindowSystem/kwindowinfo.h

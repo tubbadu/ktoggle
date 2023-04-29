@@ -68,7 +68,7 @@ include src/CMakeFiles/helloworld_autogen.dir/progress.make
 
 src/CMakeFiles/helloworld_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tubbadu/code/Kirigami/ktoggle/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target helloworld"
-	cd /home/tubbadu/code/Kirigami/ktoggle/build/src && /usr/bin/cmake -E cmake_autogen /home/tubbadu/code/Kirigami/ktoggle/build/src/CMakeFiles/helloworld_autogen.dir/AutogenInfo.json ""
+	cd /home/tubbadu/code/Kirigami/ktoggle/build/src && /usr/bin/cmake -E cmake_autogen /home/tubbadu/code/Kirigami/ktoggle/build/src/CMakeFiles/helloworld_autogen.dir/AutogenInfo.json Debug
 
 helloworld_autogen: src/CMakeFiles/helloworld_autogen
 helloworld_autogen: src/CMakeFiles/helloworld_autogen.dir/build.make

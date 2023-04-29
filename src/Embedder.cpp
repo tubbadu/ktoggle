@@ -54,13 +54,12 @@ int Embedder::getWinID()
 	return ID;
 }*/
 
-int Embedder::getRealWinID(const QString &Class){
+int Embedder::waitForId(const QString &Class){
 	int ID;
 	QElapsedTimer timer;
     timer.start();
-	while(timer.elapsed() < 1000){ // after 1000 ms exit
-		//ID = getWinID();
-		ID = xdotoolGetId(Class);
+	while(timer.elapsed() < 50000){ // after tot ms exit
+		ID = getId(Class);
 		if(ID > 0){
 			return ID;
 		} else {
@@ -99,6 +98,29 @@ int Embedder::xdotoolGetId(const QString &Class){
 	return ID;
 }
 
+int Embedder::x11_kwinGetId(const QString &Class){
+	QList<WId> windows = KWindowSystem::windows();
+	for (auto it = windows.rend(); it != windows.rbegin(); --it) {
+		WId window = *it;
+		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
+		qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
+		if(windoInfo.windowClassName() == Class){
+			return window;
+		}
+	}
+	return -1;
+}
+
+int Embedder::getId(const QString &Class){
+	if(KWindowSystem::isPlatformX11()){
+		qWarning() << "x11";
+		return x11_kwinGetId(Class);
+	} else {
+		qWarning() << "xdotool";
+		return xdotoolGetId(Class);
+	}
+}
+
 void Embedder::toggle(){
 	m_parentWindow->toggle();
 }
@@ -118,11 +140,16 @@ void Embedder::setPosition(const int &x, const int &y){
 }
 
 
-bool Embedder::embed(const QString &Class)
+bool Embedder::embed(const QString &program, const QString &Class)
 {
-	m_wid = getRealWinID(Class);
+	m_wid = getId(Class);
 	if(m_wid < 1){
-		return false;
+		// launch
+		launch(program);
+		m_wid = waitForId(Class);
+		if(m_wid < 1){
+			return false;
+		}
 	}
 
 	m_parentWindow->move(m_pos);

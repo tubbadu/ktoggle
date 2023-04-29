@@ -433,7 +433,25 @@ src/CMakeFiles/helloworld.dir/Embedder.cpp.o: /home/tubbadu/code/Kirigami/ktoggl
   /usr/include/qt5/QtGui/qvector2d.h \
   /usr/include/qt5/QtGui/qtouchdevice.h \
   /usr/include/qt5/QtGui/QCloseEvent \
-  /usr/include/qt5/QtCore/QEvent
+  /usr/include/qt5/QtCore/QEvent \
+  /usr/include/KF5/KWindowSystem/KWindowSystem \
+  /usr/include/KF5/KWindowSystem/kwindowsystem.h \
+  /usr/include/qt5/QtGui/QWidgetList \
+  /usr/include/qt5/QtGui/qwindowdefs.h \
+  /usr/include/KF5/KWindowSystem/kwindowinfo.h \
+  /usr/include/qt5/QtCore/QExplicitlySharedDataPointer \
+  /usr/include/qt5/QtCore/qshareddata.h \
+  /usr/include/qt5/QtCore/QStringList \
+  /usr/include/qt5/QtCore/qstringlist.h \
+  /usr/include/KF5/KWindowSystem/kwindowsystem_export.h \
+  /usr/include/KF5/KWindowSystem/netwm_def.h \
+  /usr/include/qt5/QtCore/QFlags \
+  /usr/include/qt5/QtCore/qflags.h \
+  /usr/include/KF5/KWindowSystem/KX11Extras \
+  /usr/include/KF5/KWindowSystem/kx11extras.h \
+  /usr/include/KF5/KWindowSystem/netwm_def.h \
+  /usr/include/KF5/KWindowSystem/KWindowInfo \
+  /usr/include/KF5/KWindowSystem/kwindowinfo.h
 
 src/CMakeFiles/helloworld.dir/MainWindow.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/src/MainWindow.cpp \
   /usr/include/stdc-predef.h \
@@ -1612,6 +1630,24 @@ src/CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.o: src/hel
   /usr/include/qt5/QtGui/qtouchdevice.h \
   /usr/include/qt5/QtGui/QCloseEvent \
   /usr/include/qt5/QtCore/QEvent \
+  /usr/include/KF5/KWindowSystem/KWindowSystem \
+  /usr/include/KF5/KWindowSystem/kwindowsystem.h \
+  /usr/include/qt5/QtGui/QWidgetList \
+  /usr/include/qt5/QtGui/qwindowdefs.h \
+  /usr/include/KF5/KWindowSystem/kwindowinfo.h \
+  /usr/include/qt5/QtCore/QExplicitlySharedDataPointer \
+  /usr/include/qt5/QtCore/qshareddata.h \
+  /usr/include/qt5/QtCore/QStringList \
+  /usr/include/qt5/QtCore/qstringlist.h \
+  /usr/include/KF5/KWindowSystem/kwindowsystem_export.h \
+  /usr/include/KF5/KWindowSystem/netwm_def.h \
+  /usr/include/qt5/QtCore/QFlags \
+  /usr/include/qt5/QtCore/qflags.h \
+  /usr/include/KF5/KWindowSystem/KX11Extras \
+  /usr/include/KF5/KWindowSystem/kx11extras.h \
+  /usr/include/KF5/KWindowSystem/netwm_def.h \
+  /usr/include/KF5/KWindowSystem/KWindowInfo \
+  /usr/include/KF5/KWindowSystem/kwindowinfo.h \
   src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp \
   /home/tubbadu/code/Kirigami/ktoggle/src/MainWindow.h \
   src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp \
@@ -1628,8 +1664,6 @@ src/CMakeFiles/helloworld.dir/helloworld_autogen/mocs_compilation.cpp.o: src/hel
   /usr/include/KF5/KIconThemes/kiconloader.h \
   /usr/include/qt5/QtCore/QString \
   /usr/include/qt5/QtCore/qstring.h \
-  /usr/include/qt5/QtCore/QStringList \
-  /usr/include/qt5/QtCore/qstringlist.h \
   /usr/include/c++/12/optional \
   /usr/include/KF5/KIconThemes/kiconthemes_export.h \
   src/helloworld_autogen/EWIEGA46WW/moc_launcher.cpp \
@@ -2226,11 +2260,19 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
   /usr/include/qt5/QtCore/qhash.h \
   /usr/include/c++/12/variant \
   /usr/include/qt5/QtCore/qshareddata.h \
-  /usr/include/qt5/QtQml/QQmlApplicationEngine \
-  /usr/include/qt5/QtQml/qqmlapplicationengine.h \
-  /usr/include/qt5/QtQml/qqmlengine.h \
-  /usr/include/qt5/QtCore/qurl.h \
-  /usr/include/qt5/QtQml/qjsengine.h \
+  /home/tubbadu/code/Kirigami/ktoggle/src/SingleApplication/singleapplication.h \
+  /usr/include/qt5/QtCore/QtGlobal \
+  /usr/include/qt5/QtCore/qglobal.h \
+  /usr/include/qt5/QtNetwork/QLocalSocket \
+  /usr/include/qt5/QtNetwork/qlocalsocket.h \
+  /usr/include/qt5/QtNetwork/qtnetworkglobal.h \
+  /usr/include/qt5/QtNetwork/qtnetwork-config.h \
+  /usr/include/qt5/QtCore/qiodevice.h \
+  /usr/include/qt5/QtNetwork/qabstractsocket.h \
+  /usr/include/qt5/QtCore/qdebug.h \
+  /usr/include/qt5/QtCore/qtextstream.h \
+  /usr/include/qt5/QtCore/qset.h \
+  /usr/include/qt5/QtCore/qcontiguouscache.h \
   /usr/include/qt5/QtCore/qsharedpointer.h \
   /usr/include/qt5/QtCore/qsharedpointer_impl.h \
   /usr/include/c++/12/memory \
@@ -2243,11 +2285,14 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
   /usr/include/c++/12/bits/shared_ptr_atomic.h \
   /usr/include/c++/12/backward/auto_ptr.h \
   /usr/include/c++/12/pstl/glue_memory_defs.h \
+  /usr/include/qt5/QtQml/QQmlApplicationEngine \
+  /usr/include/qt5/QtQml/qqmlapplicationengine.h \
+  /usr/include/qt5/QtQml/qqmlengine.h \
+  /usr/include/qt5/QtCore/qurl.h \
+  /usr/include/qt5/QtQml/qjsengine.h \
   /usr/include/qt5/QtQml/qjsvalue.h \
   /usr/include/qt5/QtQml/qtqmlglobal.h \
   /usr/include/qt5/QtQml/qtqml-config.h \
-  /usr/include/qt5/QtNetwork/qtnetworkglobal.h \
-  /usr/include/qt5/QtNetwork/qtnetwork-config.h \
   /usr/include/qt5/QtQml/qqmldebug.h \
   /usr/include/qt5/QtQml/qqml.h \
   /usr/include/qt5/QtQml/qqmlprivate.h \
@@ -2256,17 +2301,11 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
   /usr/include/qt5/QtQml/qqmlpropertyvaluesource.h \
   /usr/include/qt5/QtCore/qpointer.h \
   /usr/include/qt5/QtCore/qmetaobject.h \
-  /usr/include/qt5/QtCore/qdebug.h \
-  /usr/include/qt5/QtCore/qtextstream.h \
-  /usr/include/qt5/QtCore/qiodevice.h \
-  /usr/include/qt5/QtCore/qset.h \
-  /usr/include/qt5/QtCore/qcontiguouscache.h \
   /usr/include/qt5/QtQml/qqmlerror.h \
   /usr/include/qt5/QtQml/QtQml \
   /usr/include/qt5/QtQml/QtQmlDepends \
   /usr/include/qt5/QtCore/QtCore \
   /usr/include/qt5/QtCore/QtCoreDepends \
-  /usr/include/qt5/QtCore/qglobal.h \
   /usr/include/qt5/QtCore/qabstractanimation.h \
   /usr/include/qt5/QtCore/qabstracteventdispatcher.h \
   /usr/include/qt5/QtCore/qabstractitemmodel.h \
@@ -2543,7 +2582,6 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
   /usr/include/qt5/QtNetwork/qdtls.h \
   /usr/include/qt5/QtNetwork/qsslsocket.h \
   /usr/include/qt5/QtNetwork/qtcpsocket.h \
-  /usr/include/qt5/QtNetwork/qabstractsocket.h \
   /usr/include/qt5/QtNetwork/qsslerror.h \
   /usr/include/qt5/QtNetwork/qsslcertificate.h \
   /usr/include/qt5/QtNetwork/qssl.h \
@@ -2559,7 +2597,6 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
   /usr/include/qt5/QtNetwork/QNetworkRequest \
   /usr/include/qt5/QtNetwork/qnetworkrequest.h \
   /usr/include/qt5/QtNetwork/qlocalserver.h \
-  /usr/include/qt5/QtNetwork/qlocalsocket.h \
   /usr/include/qt5/QtNetwork/qnetworkaccessmanager.h \
   /usr/include/qt5/QtCore/QVector \
   /usr/include/qt5/QtNetwork/QSslConfiguration \
@@ -2764,7 +2801,21 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
   /usr/include/qt5/QtGui/qvector2d.h \
   /usr/include/qt5/QtGui/qtouchdevice.h \
   /usr/include/qt5/QtGui/QCloseEvent \
-  /usr/include/qt5/QtCore/QEvent
+  /usr/include/qt5/QtCore/QEvent \
+  /usr/include/KF5/KWindowSystem/KWindowSystem \
+  /usr/include/KF5/KWindowSystem/kwindowsystem.h \
+  /usr/include/qt5/QtGui/QWidgetList \
+  /usr/include/qt5/QtGui/qwindowdefs.h \
+  /usr/include/KF5/KWindowSystem/kwindowinfo.h \
+  /usr/include/qt5/QtCore/QExplicitlySharedDataPointer \
+  /usr/include/KF5/KWindowSystem/kwindowsystem_export.h \
+  /usr/include/KF5/KWindowSystem/netwm_def.h \
+  /usr/include/qt5/QtCore/QFlags \
+  /usr/include/KF5/KWindowSystem/KX11Extras \
+  /usr/include/KF5/KWindowSystem/kx11extras.h \
+  /usr/include/KF5/KWindowSystem/netwm_def.h \
+  /usr/include/KF5/KWindowSystem/KWindowInfo \
+  /usr/include/KF5/KWindowSystem/kwindowinfo.h
 
 
 /usr/include/KF5/KI18n/kuitmarkup.h:
@@ -2965,6 +3016,46 @@ src/CMakeFiles/helloworld.dir/main.cpp.o: /home/tubbadu/code/Kirigami/ktoggle/sr
 
 /usr/include/bits/fp-logb.h:
 
+/usr/include/bits/flt-eval-method.h:
+
+/usr/include/bits/libm-simd-decl-stubs.h:
+
+/usr/include/math.h:
+
+/usr/include/qt5/QtCore/qpluginloader.h:
+
+/usr/include/qt5/QtCore/qmath.h:
+
+/usr/include/qt5/QtCore/qlockfile.h:
+
+/usr/include/c++/12/tr1/poly_laguerre.tcc:
+
+/usr/include/qt5/QtCore/qlinkedlist.h:
+
+/usr/include/qt5/QtNetwork/QtNetworkDepends:
+
+/usr/include/c++/12/bits/atomic_futex.h:
+
+/usr/include/qt5/QtCore/qversionnumber.h:
+
+/usr/include/qt5/QtCore/qstorageinfo.h:
+
+/usr/include/qt5/QtCore/qlibraryinfo.h:
+
+/usr/include/qt5/QtCore/qlibrary.h:
+
+/usr/include/qt5/QtCore/qsortfilterproxymodel.h:
+
+/usr/include/qt5/QtCore/qjsonobject.h:
+
+/usr/include/qt5/QtCore/qjsondocument.h:
+
+/usr/include/qt5/QtCore/qjsonvalue.h:
+
+/usr/include/qt5/QtCore/qjsonarray.h:
+
+/usr/include/qt5/QtCore/qitemselectionmodel.h:
+
 /usr/include/assert.h:
 
 /usr/include/c++/12/bits/enable_special_members.h:
@@ -3043,6 +3134,8 @@ src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp:
 
 /usr/include/bits/setjmp.h:
 
+/home/tubbadu/code/Kirigami/ktoggle/src/SingleApplication/singleapplication.h:
+
 /usr/include/bits/types/struct_tm.h:
 
 /usr/include/qt5/QtGui/QWindow:
@@ -3050,8 +3143,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp:
 /usr/include/bits/cpu-set.h:
 
 /usr/include/qt5/QtCore/qglobal.h:
-
-/usr/include/bits/types/struct_sched_param.h:
 
 /usr/include/c++/12/x86_64-redhat-linux/bits/atomic_word.h:
 
@@ -3095,8 +3186,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp:
 
 /usr/include/qt5/QtQml/qqmldebug.h:
 
-/usr/include/c++/12/bits/alloc_traits.h:
-
 /usr/include/c++/12/ext/string_conversions.h:
 
 /usr/include/c++/12/tr1/hypergeometric.tcc:
@@ -3137,8 +3226,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp:
 
 /usr/include/qt5/QtCore/qstringview.h:
 
-/usr/include/qt5/QtCore/qjsonvalue.h:
-
 /usr/include/bits/types/mbstate_t.h:
 
 /usr/include/qt5/QtNetwork/qssl.h:
@@ -3150,12 +3237,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_TrayIcon.cpp:
 /usr/include/qt5/QtGui/qpaintdevice.h:
 
 /usr/include/qt5/QtWidgets/qactiongroup.h:
-
-/usr/include/qt5/QtNetwork/QtNetworkDepends:
-
-/usr/include/c++/12/bits/atomic_futex.h:
-
-/usr/include/qt5/QtCore/qversionnumber.h:
 
 /usr/include/qt5/QtCore/qrefcount.h:
 
@@ -3331,13 +3412,13 @@ src/helloworld_autogen/mocs_compilation.cpp:
 
 /usr/include/stdlib.h:
 
+/usr/include/KF5/KWindowSystem/kx11extras.h:
+
 /usr/include/qt5/QtCore/qcompilerdetection.h:
 
 /usr/include/time.h:
 
 /usr/include/qt5/QtCore/QtCoreDepends:
-
-/usr/include/math.h:
 
 /usr/include/c++/12/bits/stl_tempbuf.h:
 
@@ -3467,8 +3548,6 @@ src/helloworld_autogen/mocs_compilation.cpp:
 
 /usr/include/c++/12/stdexcept:
 
-/usr/include/qt5/QtWaylandCompositor/qwaylandclient.h:
-
 /usr/include/c++/12/string_view:
 
 /usr/include/c++/12/bits/atomic_base.h:
@@ -3495,8 +3574,6 @@ src/helloworld_autogen/mocs_compilation.cpp:
 
 /usr/include/qt5/QtQml/qqmlprivate.h:
 
-/usr/include/qt5/QtCore/qitemselectionmodel.h:
-
 /usr/include/bits/signal_ext.h:
 
 /usr/include/c++/12/utility:
@@ -3504,10 +3581,6 @@ src/helloworld_autogen/mocs_compilation.cpp:
 /usr/include/bits/libc-header-start.h:
 
 /usr/include/ctype.h:
-
-/usr/include/c++/12/tr1/poly_laguerre.tcc:
-
-/usr/include/qt5/QtCore/qlinkedlist.h:
 
 /usr/include/bits/timesize.h:
 
@@ -3526,6 +3599,8 @@ src/helloworld_autogen/mocs_compilation.cpp:
 /usr/include/c++/12/atomic:
 
 /usr/include/qt5/QtWidgets/QMainWindow:
+
+/usr/include/KF5/KWindowSystem/kwindowinfo.h:
 
 /usr/include/c++/12/bits/stl_algobase.h:
 
@@ -3604,6 +3679,12 @@ src/helloworld_autogen/EWIEGA46WW/qrc_resources.cpp:
 /usr/include/bits/stdlib-float.h:
 
 src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
+
+/usr/include/qt5/QtNetwork/qhostaddress.h:
+
+/usr/include/bits/math-vector.h:
+
+/usr/include/c++/12/x86_64-redhat-linux/bits/error_constants.h:
 
 /usr/include/c++/12/x86_64-redhat-linux/bits/os_defines.h:
 
@@ -3713,27 +3794,19 @@ src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/c++/12/ctime:
 
-/usr/include/qt5/QtNetwork/qhostaddress.h:
-
-/usr/include/c++/12/x86_64-redhat-linux/bits/error_constants.h:
-
-/usr/include/bits/math-vector.h:
-
 /usr/include/qt5/QtCore/qbytearraylist.h:
 
 /usr/include/bits/unistd_ext.h:
 
 /usr/include/qt5/QtCore/qstringmatcher.h:
 
+/usr/include/qt5/QtGui/QWidgetList:
+
 /usr/include/qt5/QtCore/qvarlengtharray.h:
 
 /usr/include/qt5/QtCore/QCryptographicHash:
 
 /usr/include/qt5/QtCore/qarraydataops.h:
-
-/usr/include/qt5/QtCore/qpluginloader.h:
-
-/usr/include/qt5/QtCore/qmath.h:
 
 /usr/include/qt5/QtNetwork/QNetworkAccessManager:
 
@@ -3795,6 +3868,12 @@ src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/qt5/QtGui/qsurface.h:
 
+/usr/include/bits/types/struct_sched_param.h:
+
+/usr/include/KF5/KWindowSystem/kwindowsystem_export.h:
+
+/usr/include/qt5/QtCore/QtGlobal:
+
 /usr/include/qt5/QtGui/qwindowdefs.h:
 
 /usr/include/qt5/QtGui/qicon.h:
@@ -3812,8 +3891,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 /usr/include/c++/12/type_traits:
 
 /usr/include/c++/12/memory:
-
-/usr/include/qt5/QtCore/qlockfile.h:
 
 /usr/include/c++/12/bits/stl_raw_storage_iter.h:
 
@@ -3939,8 +4016,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/qt5/QtWaylandCompositor/QWaylandSurface:
 
-/usr/include/qt5/QtWidgets/qapplication.h:
-
 /usr/include/qt5/QtCore/qfloat16.h:
 
 /usr/include/qt5/QtWaylandCompositor/qwaylandsurface.h:
@@ -4035,6 +4110,24 @@ src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/qt5/QtCore/qexception.h:
 
+/usr/include/KF5/KWindowSystem/kwindowsystem.h:
+
+/usr/include/qt5/QtCore/QExplicitlySharedDataPointer:
+
+/usr/include/qt5/QtCore/qmap.h:
+
+/usr/include/qt5/QtCore/QStringList:
+
+/usr/include/qt5/QtWaylandCompositor/qwaylandclient.h:
+
+/usr/include/KF5/KWindowSystem/netwm_def.h:
+
+/usr/include/c++/12/bits/alloc_traits.h:
+
+/usr/include/KF5/KWindowSystem/KX11Extras:
+
+/usr/include/KF5/KWindowSystem/KWindowInfo:
+
 /home/tubbadu/code/Kirigami/ktoggle/src/MainWindow.cpp:
 
 /usr/include/qt5/QtWidgets/QSystemTrayIcon:
@@ -4048,10 +4141,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 /usr/include/c++/12/bits/stl_pair.h:
 
 /usr/include/qt5/QtCore/QString:
-
-/usr/include/qt5/QtCore/qmap.h:
-
-/usr/include/qt5/QtCore/QStringList:
 
 /usr/include/qt5/QtCore/qshareddata.h:
 
@@ -4069,6 +4158,12 @@ src/helloworld_autogen/EWIEGA46WW/moc_launcher.cpp:
 
 /usr/include/qt5/QtGui/qinputmethod.h:
 
+/usr/include/qt5/QtWidgets/qapplication.h:
+
+/usr/include/qt5/QtNetwork/QLocalSocket:
+
+/usr/include/qt5/QtNetwork/qtnetworkglobal.h:
+
 /usr/include/qt5/QtQml/qqmlengine.h:
 
 /usr/include/qt5/QtCore/QLatin1Char:
@@ -4077,8 +4172,6 @@ src/helloworld_autogen/EWIEGA46WW/moc_launcher.cpp:
 
 /usr/include/qt5/QtQml/qtqml-config.h:
 
-/usr/include/qt5/QtNetwork/qtnetworkglobal.h:
-
 /usr/include/bits/types/clock_t.h:
 
 /usr/include/qt5/QtQml/qqmllist.h:
@@ -4086,6 +4179,8 @@ src/helloworld_autogen/EWIEGA46WW/moc_launcher.cpp:
 /usr/include/qt5/QtCore/qlogging.h:
 
 /usr/include/qt5/QtCore/qpointer.h:
+
+/usr/include/KF5/KWindowSystem/KWindowSystem:
 
 /usr/include/qt5/QtQml/QtQml:
 
@@ -4166,21 +4261,3 @@ src/helloworld_autogen/EWIEGA46WW/moc_launcher.cpp:
 /usr/include/qt5/QtCore/qresultstore.h:
 
 /usr/include/qt5/QtCore/qhistorystate.h:
-
-/usr/include/qt5/QtCore/qjsonarray.h:
-
-/usr/include/qt5/QtCore/qjsondocument.h:
-
-/usr/include/qt5/QtCore/qsortfilterproxymodel.h:
-
-/usr/include/qt5/QtCore/qjsonobject.h:
-
-/usr/include/qt5/QtCore/qlibrary.h:
-
-/usr/include/qt5/QtCore/qstorageinfo.h:
-
-/usr/include/qt5/QtCore/qlibraryinfo.h:
-
-/usr/include/bits/libm-simd-decl-stubs.h:
-
-/usr/include/bits/flt-eval-method.h:

@@ -12,6 +12,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.26.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.26.3/CMakeSystem.cmake"
   "/home/tubbadu/code/Kirigami/ktoggle/src/CMakeLists.txt"
+  "/home/tubbadu/code/Kirigami/ktoggle/src/SingleApplication/CMakeLists.txt"
   "/home/tubbadu/code/Kirigami/ktoggle/src/resources.qrc"
   "/usr/lib64/cmake/KF5CoreAddons/KF5CoreAddonsConfig.cmake"
   "/usr/lib64/cmake/KF5CoreAddons/KF5CoreAddonsConfigVersion.cmake"
@@ -34,6 +35,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/lib64/cmake/KF5Kirigami2/KF5Kirigami2Macros.cmake"
   "/usr/lib64/cmake/KF5Kirigami2/KF5Kirigami2Targets-release.cmake"
   "/usr/lib64/cmake/KF5Kirigami2/KF5Kirigami2Targets.cmake"
+  "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfig.cmake"
+  "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemConfigVersion.cmake"
+  "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemTargets-release.cmake"
+  "/usr/lib64/cmake/KF5WindowSystem/KF5WindowSystemTargets.cmake"
   "/usr/lib64/cmake/Qt5/Qt5Config.cmake"
   "/usr/lib64/cmake/Qt5/Qt5ConfigVersion.cmake"
   "/usr/lib64/cmake/Qt5/Qt5ModuleLocation.cmake"
@@ -162,7 +167,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
   "/usr/share/cmake/Modules/CheckCXXCompilerFlag.cmake"
   "/usr/share/cmake/Modules/CheckCXXSourceCompiles.cmake"
+  "/usr/share/cmake/Modules/CheckFunctionExists.cmake"
   "/usr/share/cmake/Modules/CheckLanguage.cmake"
+  "/usr/share/cmake/Modules/CheckLibraryExists.cmake"
   "/usr/share/cmake/Modules/CheckSymbolExists.cmake"
   "/usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/usr/share/cmake/Modules/Compiler/GNU-C.cmake"
@@ -170,9 +177,13 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake/Modules/Compiler/GNU.cmake"
   "/usr/share/cmake/Modules/ExternalProject.cmake"
   "/usr/share/cmake/Modules/FeatureSummary.cmake"
+  "/usr/share/cmake/Modules/FindFontconfig.cmake"
+  "/usr/share/cmake/Modules/FindFreetype.cmake"
   "/usr/share/cmake/Modules/FindGettext.cmake"
   "/usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake/Modules/FindPackageMessage.cmake"
+  "/usr/share/cmake/Modules/FindPkgConfig.cmake"
+  "/usr/share/cmake/Modules/FindX11.cmake"
   "/usr/share/cmake/Modules/Internal/CheckCompilerFlag.cmake"
   "/usr/share/cmake/Modules/Internal/CheckFlagCommonConfig.cmake"
   "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake"
@@ -181,6 +192,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake/Modules/Platform/Linux-GNU.cmake"
   "/usr/share/cmake/Modules/Platform/Linux.cmake"
   "/usr/share/cmake/Modules/Platform/UnixPaths.cmake"
+  "/usr/share/cmake/Modules/SelectLibraryConfigurations.cmake"
   )
 
 # The corresponding makefile is:
@@ -197,6 +209,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "src/CMakeFiles/helloworld_autogen.dir/AutogenInfo.json"
   "src/CMakeFiles/helloworld_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json"
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/SingleApplication/CMakeFiles/SingleApplication_autogen.dir/AutogenInfo.json"
+  "src/SingleApplication/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -205,4 +219,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/fetch-translations.dir/DependInfo.cmake"
   "src/CMakeFiles/helloworld.dir/DependInfo.cmake"
   "src/CMakeFiles/helloworld_autogen.dir/DependInfo.cmake"
+  "src/SingleApplication/CMakeFiles/SingleApplication.dir/DependInfo.cmake"
+  "src/SingleApplication/CMakeFiles/SingleApplication_autogen.dir/DependInfo.cmake"
   )

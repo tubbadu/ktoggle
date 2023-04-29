@@ -53,17 +53,14 @@ Kirigami.ApplicationWindow {
 
 	Embedder{
 		id: e
-		property string pclass: "telegram"
-		property string pcmd: "telegram"
+		property string pclass: "kate"
+		property string pcmd: "kate"
 
 		Component.onCompleted:{
 			setPosition(0, 0)
 			setSize(800, 600)
-			if(!embed(pclass)){
-				launch(pcmd)
-				if(!embed(pclass)){
-					Qt.quit()
-				}
+			if(!embed(pcmd, pclass)){
+				Qt.quit()
 			}
 		}
 	}
