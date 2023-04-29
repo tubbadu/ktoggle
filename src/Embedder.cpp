@@ -1,18 +1,21 @@
 #include "Embedder.h"
 
 Embedder::Embedder(QObject *parent) :
-    QObject(parent),
-    m_process(new QProcess(this)),
+	QObject(parent),
+	m_process(new QProcess(this)),
 	m_parentWindow(new MainWindow)
 {
 	m_wid = -1;
 	m_pos = QPoint(0, 0);
 	m_size = QSize(600, 500);
+	m_forceMethod = "";
 }
 
 int Embedder::launch(const QString &program)
 {
-    m_process->start(program);
+	m_process->setProgram(program);
+	m_process->startDetached();
+	qWarning() << m_process->processId();
 	return m_process->processId();
 }
 
@@ -33,7 +36,7 @@ int Embedder::getWinID()
 	xdotool->start();
 	xdotool->waitForFinished(3000);
 	
-    QString output = QString::fromLocal8Bit(xdotool->readAllStandardOutput()).trimmed();
+	QString output = QString::fromLocal8Bit(xdotool->readAllStandardOutput()).trimmed();
 	//qWarning() << args << "\n" << output;
 
 	int ID;
@@ -57,8 +60,8 @@ int Embedder::getWinID()
 int Embedder::waitForId(const QString &Class){
 	int ID;
 	QElapsedTimer timer;
-    timer.start();
-	while(timer.elapsed() < 50000){ // after tot ms exit
+	timer.start();
+	while(timer.elapsed() < 5000){ // after tot ms exit
 		ID = getId(Class);
 		if(ID > 0){
 			return ID;
@@ -76,14 +79,12 @@ int Embedder::xdotoolGetId(const QString &Class){
 	xdotool->setProgram("xdotool");
 	xdotool->setArguments(args);
 	xdotool->start();
-	qWarning() << "aaa";
 	xdotool->waitForFinished(3000);
 	
-    QString output = QString::fromLocal8Bit(xdotool->readAllStandardOutput()).trimmed();
+	QString output = QString::fromLocal8Bit(xdotool->readAllStandardOutput()).trimmed();
 
 	int ID;
 	QStringList IDs = output.split("\n");
-	//qWarning() << IDs;
 	if(IDs.size() > 1){
 		// there are more than just one WId: take the last one
 		ID = IDs[IDs.size()-1].toInt();
@@ -94,14 +95,14 @@ int Embedder::xdotoolGetId(const QString &Class){
 		// just one WId
 		ID = output.toInt();
 	}
-	qWarning() << ID;
 	return ID;
 }
 
-int Embedder::x11_kwinGetId(const QString &Class){
+int Embedder::kwinGetId(const QString &Class){
 	QList<WId> windows = KWindowSystem::windows();
-	for (auto it = windows.rend(); it != windows.rbegin(); --it) {
-		WId window = *it;
+	//for (auto it = windows.rend(); it != windows.rbegin(); --it) {
+	for (WId window : windows) {
+		//WId window = *it;
 		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
 		qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
 		if(windoInfo.windowClassName() == Class){
@@ -112,12 +113,21 @@ int Embedder::x11_kwinGetId(const QString &Class){
 }
 
 int Embedder::getId(const QString &Class){
-	if(KWindowSystem::isPlatformX11()){
-		qWarning() << "x11";
-		return x11_kwinGetId(Class);
-	} else {
-		qWarning() << "xdotool";
+	if(m_forceMethod == "xdotool"){
 		return xdotoolGetId(Class);
+	} else if (m_forceMethod == "kwin"){
+		return kwinGetId(Class);
+	} else if(m_forceMethod == ""){
+		if(KWindowSystem::isPlatformX11()){
+			qWarning() << "kwin";
+			return kwinGetId(Class);
+		} else {
+			qWarning() << "Error: Currently unsupported on this platform";
+			return -1;
+		}
+	} else {
+		qWarning() << "Error: Forced method unknow";
+		return -1;
 	}
 }
 
@@ -163,5 +173,5 @@ bool Embedder::embed(const QString &program, const QString &Class)
 	window->show();
 	m_parentWindow->show();
 
-    return true;
+	return true;
 }

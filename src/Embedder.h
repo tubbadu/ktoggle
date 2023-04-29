@@ -31,7 +31,7 @@ public:
 	Q_INVOKABLE void setSize(const int &h, const int &w);
 	Q_INVOKABLE void setPosition(const int &x, const int &y);
 	Q_INVOKABLE int xdotoolGetId(const QString &Class);
-	Q_INVOKABLE int x11_kwinGetId(const QString &Class);
+	Q_INVOKABLE int kwinGetId(const QString &Class);
 	Q_INVOKABLE int waitForId(const QString &Class);
 	Q_INVOKABLE int getId(const QString &Class);
 	Q_INVOKABLE void toggle();
@@ -49,6 +49,7 @@ private:
 	int m_wid;
 	QSize m_size;
 	QPoint m_pos;
+	QString m_forceMethod;
 
 };
 

@@ -10,10 +10,6 @@
 #include "TrayIcon.h"
 #include "Embedder.h"
 
-//#include <kwinglobals.h>
-//#include <kwineffects.h>
-
-
 int main(int argc, char *argv[])
 {
     SingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -26,6 +22,15 @@ int main(int argc, char *argv[])
 	QObject::connect( &app, &SingleApplication::instanceStarted, [ &app ]() {
         qWarning() << "raise!!!!";
     });
+
+
+	/*QList<WId> windows = KWindowSystem::windows();
+	for (WId window : windows) {
+		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
+		qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
+		
+	}
+	return 0;*/
 
     QQmlApplicationEngine engine;
 
