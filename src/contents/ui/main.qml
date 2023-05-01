@@ -48,7 +48,6 @@ Kirigami.ApplicationWindow {
 		onAction: {
 			//console.warn("action " + actions.keys)
 			execute[action.text]();
-			console.warn("done")
 		}
 
 		onClicked: {
@@ -59,17 +58,24 @@ Kirigami.ApplicationWindow {
 
 	Embedder{
 		id: e
-		property string pclass: "kate"
-		property string pcmd: "kate"
+		property string pclass: "TelegramDesktop"
+		property string pcmd: "telegram"
 
 		Component.onCompleted:{
 			//launch("kate")
 			setPosition(0, 0)
-			
 			setSize(800, 600)
-			if(!embed(pcmd, pclass)){
-				Qt.quit()
+			setClass(pclass)
+			setProgram(pcmd, ["--help"])
+			if(!embed(getId())){
+				run(true)
+			} else {
+				console.warn("wtf")
 			}
 		}
 	}
+
+	function dewit(y, x) {
+        console.warn("qqqqqq" + x + ">")
+    }
 }

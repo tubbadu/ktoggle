@@ -2,27 +2,64 @@
 
 Embedder::Embedder(QObject *parent) :
 	QObject(parent),
-	m_process(new QProcess(this)),
-	m_parentWindow(new MainWindow)
+	m_process(new QProcess(this))//,
+	//m_parentWindow(new MainWindow)
 {
 	m_wid = -1;
 	m_pos = QPoint(0, 0);
 	m_size = QSize(600, 500);
 	m_forceMethod = "";
+	m_class = "";
+	m_program = "";
+	m_arguments = QStringList();
+	QObject::connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &Embedder::onWindowAdded);
 }
 
-int Embedder::launch(const QString &program)
+int Embedder::run()
 {
-	m_process->setProgram(program);
-	m_process->startDetached();
-	qWarning() << m_process->processId();
-	return m_process->processId();
+	return run(false);
+}
+int Embedder::run(const bool &detached)
+{
+	QProcess *process = new QProcess;
+	process->setProgram(m_program);
+	process->setArguments(m_arguments);
+	if(detached){
+		process->startDetached();
+	} else {
+		process->start();
+	}
+	m_pid = process->processId();
+	qWarning() << "ueue" << m_program << m_arguments;
+	return m_pid;
 }
 
-/*int Embedder::pid(){
-	return m_process->processId();
+void Embedder::setProgram(const QString &program, const QStringList &args){
+	m_program = program;
+	m_arguments = args;
+	qWarning() << "hoho" << program << args;
+}
+void Embedder::setProgram(const QString &program){
+	m_program = program;
 }
 
+int Embedder::pid(){
+	return m_pid;
+}
+
+
+void Embedder::onWindowAdded(WId id){
+	qWarning() << "window added!";
+	
+	auto windoInfo = KWindowInfo(id, NET::WMVisibleName, NET::WM2WindowClass);
+	//qWarning() << id << windoInfo.visibleName() << windoInfo.windowClassClass();
+	if(windoInfo.windowClassClass() == m_class){
+		if(m_wid < 1){
+			embed(id);
+		}
+	}
+}
+/*
 int Embedder::getWinID()
 {
 	// X11 only!
@@ -57,25 +94,10 @@ int Embedder::getWinID()
 	return ID;
 }*/
 
-int Embedder::waitForId(const QString &Class){
-	int ID;
-	QElapsedTimer timer;
-	timer.start();
-	while(timer.elapsed() < 5000){ // after tot ms exit
-		ID = getId(Class);
-		if(ID > 0){
-			return ID;
-		} else {
-			sleep(0.05);
-		}
-	}
-	return -1;
-}
-
-int Embedder::xdotoolGetId(const QString &Class){
+int Embedder::xdotool_getId(){
 	QProcess *xdotool = new QProcess;
 	QStringList args;
-	args << "search" << "--onlyvisible" << "--class" << Class;
+	args << "search" << "--onlyvisible" << "--class" << m_class;
 	xdotool->setProgram("xdotool");
 	xdotool->setArguments(args);
 	xdotool->start();
@@ -98,59 +120,7 @@ int Embedder::xdotoolGetId(const QString &Class){
 	return ID;
 }
 
-int Embedder::kwinGetId(const QString &Class){
-	//for (auto it = windows.rend(); it != windows.rbegin(); --it) {
-	for (auto w : kwin_getWindowList()) {
-		WId window = w.toInt();
-		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
-		//qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
-		if(windoInfo.windowClassName() == Class){
-			return window;
-		}
-	}
-	return -1;
-}
-
-
-
-int Embedder::getId(const QString &Class){
-	if(m_forceMethod == "xdotool"){
-		return xdotoolGetId(Class);
-	} else if (m_forceMethod == "kwin"){
-		return kwinGetId(Class);
-	} else if(m_forceMethod == ""){
-		if(KWindowSystem::isPlatformX11()){ // TODO tidy up
-			return kwinGetId(Class);
-		} else {
-			qWarning() << "Error: Currently unsupported on this platform";
-			return -1;
-		}
-	} else {
-		qWarning() << "Error: Forced method unknow";
-		return -1;
-	}
-}
-
-void Embedder::toggle(){
-	m_parentWindow->toggle();
-}
-void Embedder::show(){
-	m_parentWindow->show();
-	m_parentWindow->activateWindow();
-
-}
-void Embedder::hide(){
-	m_parentWindow->hide();
-}
-
-void Embedder::setSize(const int &h, const int &w){
-	m_size = QSize(h, w);
-}
-void Embedder::setPosition(const int &x, const int &y){
-	m_pos = QPoint(x, y);
-}
-
-QStringList Embedder::kwin_getWindowList(){
+QStringList Embedder::qdbuskwin_getWidList(){
 	QDateTime datetime_now = QDateTime::currentDateTime();
 	QString since = datetime_now.toString(Qt::ISODateWithMs).replace("T", " ");
 
@@ -181,35 +151,117 @@ QStringList Embedder::kwin_getWindowList(){
 	return res;
 }
 
-
-bool Embedder::embed(const QString &program, const QString &Class)
-{
-/*	m_parentWindow->move(m_pos);
-	m_parentWindow->resize(m_size);
-	m_parentWindow->show();
-	return true;*/
-
-
-	m_wid = getId(Class);
-	if(m_wid < 1){
-		// launch
-		launch(program);
-		m_wid = waitForId(Class);
-		if(m_wid < 1){
-			return false;
+int Embedder::qdbuskwin_getId(){
+	//for (auto it = windows.rend(); it != windows.rbegin(); --it) {
+	for (auto w : qdbuskwin_getWidList()) {
+		WId window = w.toInt();
+		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
+		//qWarning() << window << windoInfo.visibleName() << windoInfo.windowm_className();
+		if(windoInfo.windowClassName() == m_class){
+			return window;
 		}
 	}
+	return -1;
+}
 
-	m_parentWindow->move(m_pos);
-	m_parentWindow->resize(m_size);
+int  Embedder::kwin_getId(){
+	// get window list
+	for(auto window : KWindowSystem::windows()){
+		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
+		//qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassClass();
+		if(windoInfo.windowClassClass() == m_class){
+			return window;
+		}
+	}
+	return -1;
+}
 
+void Embedder::setClass(const QString &Class){
+	m_class = Class;
+}
+
+int Embedder::getId(){
+	if(m_forceMethod == "xdotool"){
+		return xdotool_getId();
+	} else if (m_forceMethod == "kwin"){
+		return kwin_getId();
+	} else if(m_forceMethod == ""){
+		if(KWindowSystem::isPlatformX11()){ // TODO tidy up
+			return kwin_getId();
+		} else {
+			qWarning() << "Error: Currently unsupported on this platform";
+			return -1;
+		}
+	} else {
+		qWarning() << "Error: Forced method unknow";
+		return -1;
+	}
+}
+
+void Embedder::toggle(){
+	//m_parentWindow->toggle();
+	if(KX11Extras::activeWindow() == m_window->winId()){
+		hide();
+	} else {
+		bool wasVisible = m_window->isVisible();
+		show();
+		if(m_window->isVisible() && wasVisible){
+			run(true);
+			qWarning() << "launching";
+		}
+	}
+}
+
+void Embedder::show(){
+	m_window->show();
+	m_window->requestActivate();
+}
+void Embedder::hide(){
+	m_window->hide();
+}
+
+void Embedder::setSize(const int &h, const int &w){
+	m_size = QSize(h, w);
+}
+void Embedder::setPosition(const int &x, const int &y){
+	m_pos = QPoint(x, y);
+}
+
+void Embedder::updateGeometry(){
+	qWarning() << "updated geometry";
+	m_window->resize(m_size);
+	m_window->setPosition(m_pos);
+	// run another times otherwise it won't work
+	m_window->resize(m_size);
+	m_window->setPosition(m_pos);
+}
+
+bool Embedder::embed(const int &wid){
+	if(wid < 1){
+		return false;
+	}
+	m_wid = wid;
 	m_window = QWindow::fromWinId(m_wid);
 	m_window->setFlags(Qt::FramelessWindowHint);
-	m_container = QWidget::createWindowContainer(m_window);
-	m_parentWindow->setCentralWidget(m_container);
-	m_container->show();
-	m_window->show();
-	m_parentWindow->show();
 
+	
+//	KWindowSystem::setMainWindow(m_window, m_parentWindow->winId());
+//	m_parentWindow->move(m_pos);
+//	m_parentWindow->resize(m_size);
+	updateGeometry();
+	
+
+
+	
+	/*m_container = QWidget::createWindowContainer(m_window);
+	m_parentWindow->setCentralWidget(m_container);
+	m_container->show();*/
+	m_window->show();
+	
+	//m_parentWindow->show();
 	return true;
+}
+
+void Embedder::prova(int x){
+	qWarning() << "diobove";
 }

@@ -12,38 +12,37 @@
 
 int main(int argc, char *argv[])
 {
-    SingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    SingleApplication app(argc, argv);
-    KLocalizedString::setApplicationDomain("helloworld");
-    QCoreApplication::setOrganizationName(QStringLiteral("KDE"));
-    QCoreApplication::setOrganizationDomain(QStringLiteral("kde.org"));
-    QCoreApplication::setApplicationName(QStringLiteral("Hello World"));
+	SingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	SingleApplication app(argc, argv, true);
+	KLocalizedString::setApplicationDomain("helloworld");
+	QCoreApplication::setOrganizationName(QStringLiteral("KDE"));
+	QCoreApplication::setOrganizationDomain(QStringLiteral("kde.org"));
+	QCoreApplication::setApplicationName(QStringLiteral("Hello World"));
 
-	QObject::connect( &app, &SingleApplication::instanceStarted, [ &app ]() {
-        qWarning() << "raise!!!!";
-    });
-
-
-	/*QList<WId> windows = KWindowSystem::windows();
-	for (WId window : windows) {
-		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
-		qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassName();
-		
+	if( app.isSecondary() ) {
+		app.sendMessage( app.arguments().join(' ').toUtf8() );
+		qWarning() << "App already running.";
+		qWarning() << "Primary instance PID: " << app.primaryPid();
+		qWarning() << "Primary instance user: " << app.primaryUser();
+		return 0;
 	}
-	return 0;*/
 
-    QQmlApplicationEngine engine;
-
-    qmlRegisterType<Launcher>("Launcher", 1, 0, "Launcher");
+	QQmlApplicationEngine engine;
+	qmlRegisterType<Launcher>("Launcher", 1, 0, "Launcher");
 	qmlRegisterType<TrayIcon>("TrayIcon", 1, 0, "TrayIcon");
 	qmlRegisterType<Embedder>("Embedder", 1, 0, "Embedder");
 
-    engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+	engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
+	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    if (engine.rootObjects().isEmpty()) {
-        return -1;
-    }	
+	if (engine.rootObjects().isEmpty()) {
+		return -1;
+	}
 
-    return app.exec();
+	QObject::connect( &app, &SingleApplication::receivedMessage, [&engine](int instanceId, QByteArray message) {
+		QObject* rootObject = engine.rootObjects().first();
+		QMetaObject::invokeMethod(rootObject, "dewit", Q_ARG(QVariant, instanceId), Q_ARG(QVariant, message));
+	});
+
+	return app.exec();
 }
