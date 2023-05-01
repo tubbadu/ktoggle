@@ -37,6 +37,7 @@ public:
 	Q_INVOKABLE void setPosition(const int &x, const int &y);
 	Q_INVOKABLE void setProgram(const QString &program, const QStringList &args);
 	Q_INVOKABLE void setProgram(const QString &program);
+	Q_INVOKABLE void setCmdToRaise(const bool &cmdToRaise);
 	Q_INVOKABLE void updateGeometry();
 	Q_INVOKABLE void setClass(const QString &Class);
 	Q_INVOKABLE int xdotool_getId();
@@ -49,12 +50,6 @@ public:
 	Q_INVOKABLE void show();
 	Q_INVOKABLE void hide();
 	Q_INVOKABLE QStringList qdbuskwin_getWidList();
-	Q_INVOKABLE void prova(int x);
-
-
-
-
-
 
 private:
     QProcess *m_process;
@@ -69,6 +64,7 @@ private:
 	QString m_program;
 	QStringList m_arguments;
 	int m_pid;
+	bool m_cmdToRaise;
 };
 
 #endif

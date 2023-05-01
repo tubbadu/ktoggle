@@ -2,8 +2,7 @@
 
 Embedder::Embedder(QObject *parent) :
 	QObject(parent),
-	m_process(new QProcess(this))//,
-	//m_parentWindow(new MainWindow)
+	m_process(new QProcess(this))
 {
 	m_wid = -1;
 	m_pos = QPoint(0, 0);
@@ -12,6 +11,7 @@ Embedder::Embedder(QObject *parent) :
 	m_class = "";
 	m_program = "";
 	m_arguments = QStringList();
+	m_cmdToRaise = false;
 	QObject::connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &Embedder::onWindowAdded);
 }
 
@@ -25,19 +25,18 @@ int Embedder::run(const bool &detached)
 	process->setProgram(m_program);
 	process->setArguments(m_arguments);
 	if(detached){
+		qWarning() << "eh no eh";
 		process->startDetached();
 	} else {
 		process->start();
 	}
 	m_pid = process->processId();
-	qWarning() << "ueue" << m_program << m_arguments;
 	return m_pid;
 }
 
 void Embedder::setProgram(const QString &program, const QStringList &args){
 	m_program = program;
 	m_arguments = args;
-	qWarning() << "hoho" << program << args;
 }
 void Embedder::setProgram(const QString &program){
 	m_program = program;
@@ -49,8 +48,6 @@ int Embedder::pid(){
 
 
 void Embedder::onWindowAdded(WId id){
-	qWarning() << "window added!";
-	
 	auto windoInfo = KWindowInfo(id, NET::WMVisibleName, NET::WM2WindowClass);
 	//qWarning() << id << windoInfo.visibleName() << windoInfo.windowClassClass();
 	if(windoInfo.windowClassClass() == m_class){
@@ -168,7 +165,6 @@ int  Embedder::kwin_getId(){
 	// get window list
 	for(auto window : KWindowSystem::windows()){
 		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
-		//qWarning() << window << windoInfo.visibleName() << windoInfo.windowClassClass();
 		if(windoInfo.windowClassClass() == m_class){
 			return window;
 		}
@@ -178,6 +174,10 @@ int  Embedder::kwin_getId(){
 
 void Embedder::setClass(const QString &Class){
 	m_class = Class;
+}
+
+void Embedder::setCmdToRaise(const bool &cmdToRaise){
+	m_cmdToRaise = cmdToRaise;
 }
 
 int Embedder::getId(){
@@ -205,16 +205,18 @@ void Embedder::toggle(){
 	} else {
 		bool wasVisible = m_window->isVisible();
 		show();
-		if(m_window->isVisible() && wasVisible){
-			run(true);
-			qWarning() << "launching";
+		if(m_window->isVisible() && wasVisible && m_cmdToRaise){
+			run(!true);
+			qWarning() << "relaunching";
 		}
 	}
 }
 
 void Embedder::show(){
 	m_window->show();
+	m_window->raise();
 	m_window->requestActivate();
+	KX11Extras::forceActiveWindow(m_window->winId());
 }
 void Embedder::hide(){
 	m_window->hide();
@@ -231,7 +233,7 @@ void Embedder::updateGeometry(){
 	qWarning() << "updated geometry";
 	m_window->resize(m_size);
 	m_window->setPosition(m_pos);
-	// run another times otherwise it won't work
+	// run another times otherwise it won't work, dunno why
 	m_window->resize(m_size);
 	m_window->setPosition(m_pos);
 }
@@ -243,25 +245,8 @@ bool Embedder::embed(const int &wid){
 	m_wid = wid;
 	m_window = QWindow::fromWinId(m_wid);
 	m_window->setFlags(Qt::FramelessWindowHint);
-
-	
-//	KWindowSystem::setMainWindow(m_window, m_parentWindow->winId());
-//	m_parentWindow->move(m_pos);
-//	m_parentWindow->resize(m_size);
 	updateGeometry();
-	
-
-
-	
-	/*m_container = QWidget::createWindowContainer(m_window);
-	m_parentWindow->setCentralWidget(m_container);
-	m_container->show();*/
 	m_window->show();
 	
-	//m_parentWindow->show();
 	return true;
-}
-
-void Embedder::prova(int x){
-	qWarning() << "diobove";
 }
