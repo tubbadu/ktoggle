@@ -8,12 +8,11 @@ Embedder::Embedder(QObject *parent) :
 	m_wid = -1;
 	m_pos = QPoint(0, 0);
 	m_size = QSize(600, 500);
-	m_forceMethod = "";
 	m_class = "";
 	m_program = "";
 	m_arguments = QStringList();
 	m_cmdToRaise = false;
-	
+	m_identifier = "";
 }
 
 int Embedder::run()
@@ -23,8 +22,14 @@ int Embedder::run()
 int Embedder::run(const bool &detached)
 {
 	QProcess *process = new QProcess;
+	if(m_program.length() < 0){
+		qWarning() << "ERROR: trying to run program, but program is unspecified";
+		QCoreApplication::quit();
+	} if(m_arguments.length() > 0){
+		process->setArguments(m_arguments);
+	}
 	process->setProgram(m_program);
-	process->setArguments(m_arguments);
+
 	if(detached){
 		process->startDetached();
 	} else {
@@ -49,6 +54,7 @@ void Embedder::addTrayIcon(const QString &icon){
 	m_menu->addAction("Show");
 	m_menu->addAction("Hide");
 	m_menu->addAction("Toggle");
+	m_menu->addAction("Quit KToggle");
 	m_trayicon->setContextMenu(m_menu);
 
 	QIcon kirigamiIcon = KIconLoader::global()->loadIcon(icon, KIconLoader::Toolbar);
@@ -64,6 +70,9 @@ int Embedder::pid(){
 }
 
 void Embedder::toggle(){
+	if(m_wid.length() < 2){
+		embed();
+	}
 	if(isActiveClient()){
 		hide();
 	} else {
@@ -76,9 +85,15 @@ bool Embedder::isActiveClient(){
 }
 
 void Embedder::show(){
+	if(m_wid.length() < 2){
+		embed();
+	}
 	kwin->activateWindow(m_wid);
 }
 void Embedder::hide(){
+	if(m_wid.length() < 2){
+		embed();
+	}
 	kwin->hideWindow(m_wid);
 }
 
@@ -95,9 +110,24 @@ void Embedder::setCmdToRaise(const bool &cmdToRaise){
 	m_cmdToRaise = cmdToRaise;
 }
 
-bool Embedder::embed(const QString &Class){
-	setClass(Class);
-	QString id = kwin->searchWindow(Class).trimmed();
+bool Embedder::embed(){
+	if(m_class.length() < 1){
+		qWarning() << "ERROR: Class unspecified.";
+		QCoreApplication::quit();
+	}
+
+	QString id;
+
+	if(m_name.length() > 0){
+		if(m_pid > 0){
+			id = kwin->searchWindow(m_class, m_name, QString::number(m_pid));
+		} else {
+			id = kwin->searchWindow(m_class, m_name);
+		}
+	} else {
+		id = kwin->searchWindow(m_class);
+	}
+	
 	if(id.length() > 1){
 		m_wid = id;
 		return true;
@@ -106,7 +136,6 @@ bool Embedder::embed(const QString &Class){
 	}
 }
 
-
 void Embedder::menuAction(QAction *action){
 	if(action->text() == "Hide") {
 		hide();
@@ -114,10 +143,45 @@ void Embedder::menuAction(QAction *action){
 		show();
 	} else if(action->text() == "Toggle") {
 		toggle();
+	} else if(action->text() == "Quit KToggle") {
+		QCoreApplication::quit();
 	} else {
 		qWarning() << "WARNING: unknown action detected:" << action->text();
 	}
 }
 void Embedder::trayIconClicked(){
 	toggle();
+}
+
+void Embedder::move(const QString &x, const QString &y){
+	kwin->moveWindow(x, y);
+}
+void Embedder::resize(const QString &h, const QString &w){
+	kwin->resizeWindow(h, w);
+}
+void Embedder::move(const QString &xy){
+	QString x = xy.split(",")[0];
+	QString y = xy.split(",")[1];
+	kwin->moveWindow(x, y);
+}
+void Embedder::resize(const QString &size){
+	QString h = size.split(",")[0];
+	QString w = size.split(",")[1];
+	kwin->resizeWindow(h, w);
+}
+
+void Embedder::test(){
+	kwin->test();
+}
+
+void Embedder::setName(const QString &Name){
+	m_name = Name;
+}
+
+QString Embedder::identifier(){
+	return m_identifier;
+}
+
+void Embedder::setIdentifier(const QString &id){
+	m_identifier = id;
 }

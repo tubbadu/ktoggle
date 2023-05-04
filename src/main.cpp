@@ -51,6 +51,57 @@ QByteArray parserToJs(const QCommandLineParser &parser){
 	return docJS.toJson();
 }
 
+
+Embedder* addWindow(QCommandLineParser *parser, const QString &id){
+	Embedder *embedder = new Embedder;
+	if(!parser->isSet("class")){
+		qWarning() << "ERROR: class unspecified";
+		parser->showHelp();
+	} else {
+		embedder->setClass(parser->value("class"));
+
+		if(parser->isSet("program")){
+			embedder->setProgram(parser->value("program"));
+		}
+		if(parser->isSet("icon")){
+			embedder->addTrayIcon(parser->value("icon"));
+		}
+		if(parser->isSet("name")){
+			embedder->setName(parser->value("name"));
+		}
+		if(parser->isSet("size")){
+			embedder->setProgram(parser->value("size"));
+		}
+		if(parser->isSet("xy")){			
+			embedder->move(parser->value("xy"));
+		}
+		embedder->setCmdToRaise(parser->isSet("cmd-to-raise"));
+
+		if(!embedder->embed()){
+			qWarning() << "Not present, running it";
+			// window not present: run and embed again
+			embedder->run();
+		} else {
+			qWarning() << "Already running";
+		}
+	}
+	embedder->setIdentifier(id);
+	return embedder;
+}
+
+bool newRequest(QList<Embedder*> *wList, QCommandLineParser *parser, const QString &id){
+	qWarning() << id;
+	for(Embedder *e : *wList){
+		if(e->identifier() == id){
+			qWarning() << "Embedder already present!";
+			e->toggle();
+			return false;
+		}
+	}
+	wList->append(addWindow(parser, id));
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	SingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -97,8 +148,8 @@ int main(int argc, char *argv[])
 	sizeOption.setDefaultValue("500,700");
 	parser.addOption(sizeOption);
 
-	QCommandLineOption trayOption("no-tray",
-		QCoreApplication::translate("main", "Do not display tray icon."));
+	QCommandLineOption trayOption("test",
+		QCoreApplication::translate("main", "Get a list of all active windows names and classes."));
 	parser.addOption(trayOption);
 
 	QCommandLineOption cmdToRaiseOption("cmd-to-raise",
@@ -107,23 +158,41 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
+
 	if( app.isSecondary() ) {
-		app.sendMessage(parserToJs(parser));
+		QByteArray data;
+		QDataStream dataStreamWrite(&data, QIODevice::WriteOnly);
+		dataStreamWrite << QCoreApplication::arguments();
+		app.sendMessage(data);
 		qWarning() << "App already running.";
 		qWarning() << "Primary instance PID: " << app.primaryPid();
 		qWarning() << "Primary instance user: " << app.primaryUser();
 		return 0;
 	}
+
+	if(parser.isSet("test")){
+		Embedder e;
+		e.test();
+		return 0;
+	}
 	
-	Embedder *embedder = new Embedder;
-	qWarning() << "embedded? " << embedder->embed("org.telegram.desktop");
+	//parser.process(QStringList() << "ktoggle" <);
 
-	embedder->addTrayIcon("firefox");
 
-	/*QObject::connect( &app, &SingleApplication::receivedMessage, [&embedder](int instanceId, QByteArray message) {
-		
-	});*/
+	QList<Embedder*> wList;
+	//wList.append(addWindow(&parser));
+
+	newRequest(&wList, &parser, QString(QCoreApplication::arguments().mid(1).join(" ")));
 	
 
+	QObject::connect( &app, &SingleApplication::receivedMessage, [&parser, &wList](int instanceId, QByteArray message) {
+		QDataStream dataStreamRead(message);
+		QStringList args;
+		dataStreamRead >> args;
+		qWarning() << args;
+		parser.process(args);
+		newRequest(&wList, &parser, QString(args.join(" ")));
+	});
+	
 	return app.exec();
 }

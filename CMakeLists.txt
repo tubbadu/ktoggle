@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(helloworld)
+project(ktoggle)
 
 set(KF_MIN_VERSION "5.68.0")
 set(QT_MIN_VERSION "5.12.0")
@@ -21,3 +21,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(src)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES) 
+
+install(TARGETS ktoggle DESTINATION ${CMAKE_INSTALL_BINDIR})

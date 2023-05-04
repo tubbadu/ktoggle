@@ -26,8 +26,10 @@ public:
 	Q_INVOKABLE bool activateWindow(const QString wid);
 	Q_INVOKABLE QString activeClientId();
 	Q_INVOKABLE void hideWindow(const QString wid);
-
-
+	Q_INVOKABLE void moveWindow(const QString &x, const QString &y);
+	Q_INVOKABLE void resizeWindow(const QString &h, const QString &w);
+	Q_INVOKABLE void setWindowGeometry(const QString &x, const QString &y, const QString &h, const QString &w);
+	Q_INVOKABLE void test();
 
 
 private:

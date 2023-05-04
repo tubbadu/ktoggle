@@ -1,7 +1,7 @@
 set(QAPPLICATION_CLASS QApplication)
 add_subdirectory(./SingleApplication)
 
-add_executable(helloworld
+add_executable(ktoggle
 	main.cpp
 	resources.qrc
 	TrayIcon.cpp
@@ -15,7 +15,7 @@ find_package(Qt5 COMPONENTS Core Gui Quick QuickWidgets WaylandCompositor REQUIR
 find_package(KF5 REQUIRED COMPONENTS WindowSystem)
 
 
-target_link_libraries(helloworld
+target_link_libraries(ktoggle
 	Qt5::Quick
 	Qt5::Qml
 	Qt5::Gui

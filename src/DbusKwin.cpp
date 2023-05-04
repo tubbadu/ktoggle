@@ -47,7 +47,11 @@ QStringList DbusKwin::runScript(const QString filename){
     QStringList res = QString::fromLocal8Bit(kwin->readAllStandardOutput()).trimmed().replace(regex, "").split("\n");
 	kwin->deleteLater();
 	m_temp->remove();
-	return res;
+	if(res == QStringList("-- No entries --")){
+		return QStringList();
+	} else {
+		return res;
+	}
 }
 
 QString DbusKwin::createFile(const QString filecontent){
@@ -83,7 +87,7 @@ QString DbusKwin::searchWindow(const QString wclass, const QString wname, const 
 	if(ret.length() > 0){
 		return ret[0];
 	} else {
-		return QString();
+		return QString("");
 	}
 }
 
@@ -188,7 +192,7 @@ void DbusKwin::hideWindow(const QString wid){
 	runScript(createFile(script));
 }
 
-void DbusKwin::moveWindow(const int &x, const int &y){
+void DbusKwin::moveWindow(const QString &x, const QString &y){
 	QString script(
 		"client.geometry = { \
 			x: $X, \
@@ -201,7 +205,7 @@ void DbusKwin::moveWindow(const int &x, const int &y){
 	runScript(createFile(script));
 }
 
-void DbusKwin::resizeWindow(const int &h, const int &w){
+void DbusKwin::resizeWindow(const QString &h, const QString &w){
 	QString script(
 		"client.geometry = { \
 			x: client.x, \
@@ -214,7 +218,7 @@ void DbusKwin::resizeWindow(const int &h, const int &w){
 	runScript(createFile(script));
 }
 
-void DbusKwin::setWindowGeometry(const int &x, const int &y, const int &h, const int &w){
+void DbusKwin::setWindowGeometry(const QString &x, const QString &y, const QString &h, const QString &w){
 	QString script(
 		"client.geometry = { \
 			x: $X, \
@@ -225,4 +229,20 @@ void DbusKwin::setWindowGeometry(const int &x, const int &y, const int &h, const
 	);
 	script = script.replace("$HEIGHT", h).replace("$WIDTH", w).replace("$X", x).replace("$Y", y);
 	runScript(createFile(script));
+}
+
+void DbusKwin::test(){
+	QString script(
+		"let clients = workspace.clientList(); \
+		const maxLength = clients.reduce((max, current) => { \
+			return current.resourceClass.length > max ? current.resourceClass.length : max; \
+		}, 0); \
+		console.warn('>' + 'Class'.padEnd(maxLength + 5, ' ') + 'Name'); \
+		console.warn('>'); \
+		for(var i=0; i<clients.length; i++){ \
+			console.warn('>' + clients[i].resourceClass.padEnd(maxLength + 5, ' ') + clients[i].resourceName); \
+		}"
+	);
+	QTextStream cout(stdout);
+	cout << runScript(createFile(script)).join("\n") << endl;
 }
