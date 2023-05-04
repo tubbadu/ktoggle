@@ -14,6 +14,8 @@
 #include "launcher.h"
 #include "TrayIcon.h"
 #include "Embedder.h"
+#include "DbusKwin.h"
+
 
 QByteArray parserToJs(const QCommandLineParser &parser){
 	QMap<QString, QString> map;
@@ -114,7 +116,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	QQmlApplicationEngine engine;
+	/*QQmlApplicationEngine engine;
 	qmlRegisterType<Launcher>("Launcher", 1, 0, "Launcher");
 	qmlRegisterType<TrayIcon>("TrayIcon", 1, 0, "TrayIcon");
 	qmlRegisterType<Embedder>("Embedder", 1, 0, "Embedder");
@@ -134,6 +136,15 @@ int main(int argc, char *argv[])
 	});
 
 	QMetaObject::invokeMethod(rootObject, "newRequest", Q_ARG(QVariant, 0), Q_ARG(QVariant, parserToJs(parser)));
+	*/
+	DbusKwin *kwin = new DbusKwin;
+	Embedder *embedder = new Embedder;
+
+	QObject::connect( &app, &SingleApplication::receivedMessage, [&embedder](int instanceId, QByteArray message) {
+		//QMetaObject::invokeMethod(rootObject, "newRequest", Q_ARG(QVariant, instanceId), Q_ARG(QVariant, message));
+	});
+	
+	kwin->activateWindow(kwin->searchWindow("org.telegram.desktop"));
 
 	return app.exec();
 }

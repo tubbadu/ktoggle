@@ -57,6 +57,7 @@ void Embedder::setCmdToRaise(const bool &cmdToRaise){
 
 
 void Embedder::toggle(){
+	//m_parentWindow->toggle();
 	if(KX11Extras::activeWindow() == m_window->winId()){
 		hide();
 	} else {
@@ -89,7 +90,15 @@ void Embedder::setPosition(const int &x, const int &y){
 
 
 bool Embedder::embed(const int &wid){
-
+	/*if(wid < 1){
+		return false;
+	}
+	m_wid = wid;
+	m_window = QWindow::fromWinId(m_wid);
+	m_window->setFlags(Qt::FramelessWindowHint);
+	updateGeometry();
+	m_window->show();*/
+	
 	return true;
 }
 

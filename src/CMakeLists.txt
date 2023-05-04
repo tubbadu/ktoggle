@@ -8,6 +8,7 @@ add_executable(helloworld
 	TrayIcon.cpp
 	Embedder.cpp
 	MainWindow.cpp
+	DbusKwin.cpp
 )
 
 
