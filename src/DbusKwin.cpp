@@ -150,7 +150,6 @@ bool DbusKwin::activateWindow(const QString wid){
 	);
 	script = script.replace("$WID", wid);
 	QStringList ret = runScript(createFile(script));
-	qWarning() << ret;
 	if(ret.length() > 0){
 		if(ret[0] == "0") {
 			return true;
@@ -178,14 +177,52 @@ void DbusKwin::hideWindow(const QString wid){
 		for (var i = 0; i < clients.length; i++) { \
 			var client = clients[i]; \
 			if(client.internalId == wid){ \
-				client.minimized = true; \
-				client.skipTaskbar = true; \
 				client.skipPager = true; \
 				client.skipSwitcher = true; \
+				client.minimized = true; \
 			} \
 		}"
-	);
+	); // 				client.skipTaskbar = true; // gives error boh
 
 	script = script.replace("$WID", wid);
+	runScript(createFile(script));
+}
+
+void DbusKwin::moveWindow(const int &x, const int &y){
+	QString script(
+		"client.geometry = { \
+			x: $X, \
+			y: $Y, \
+			width: client.width, \
+			height: client.height \
+		};"
+	);
+	script = script.replace("$X", x).replace("$Y", y);
+	runScript(createFile(script));
+}
+
+void DbusKwin::resizeWindow(const int &h, const int &w){
+	QString script(
+		"client.geometry = { \
+			x: client.x, \
+			y: client.y, \
+			width: $WIDTH, \
+			height: $HEIGHT \
+		};"
+	);
+	script = script.replace("$HEIGHT", h).replace("$WIDTH", w);
+	runScript(createFile(script));
+}
+
+void DbusKwin::setWindowGeometry(const int &x, const int &y, const int &h, const int &w){
+	QString script(
+		"client.geometry = { \
+			x: $X, \
+			y: $Y, \
+			width: $WIDTH, \
+			height: $HEIGHT \
+		};"
+	);
+	script = script.replace("$HEIGHT", h).replace("$WIDTH", w).replace("$X", x).replace("$Y", y);
 	runScript(createFile(script));
 }

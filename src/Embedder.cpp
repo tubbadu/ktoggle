@@ -2,7 +2,8 @@
 
 Embedder::Embedder(QObject *parent) :
 	QObject(parent),
-	m_process(new QProcess(this))
+	m_process(new QProcess(this)),
+	kwin(new DbusKwin(this))
 {
 	m_wid = -1;
 	m_pos = QPoint(0, 0);
@@ -12,7 +13,7 @@ Embedder::Embedder(QObject *parent) :
 	m_program = "";
 	m_arguments = QStringList();
 	m_cmdToRaise = false;
-	//QObject::connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &Embedder::onWindowAdded);
+	
 }
 
 int Embedder::run()
@@ -25,7 +26,6 @@ int Embedder::run(const bool &detached)
 	process->setProgram(m_program);
 	process->setArguments(m_arguments);
 	if(detached){
-		qWarning() << "eh no eh";
 		process->startDetached();
 	} else {
 		process->start();
@@ -42,41 +42,44 @@ void Embedder::setProgram(const QString &program){
 	m_program = program;
 }
 
+void Embedder::addTrayIcon(const QString &icon){
+	m_menu = new QMenu();
+	m_trayicon = new QSystemTrayIcon();
+
+	m_menu->addAction("Show");
+	m_menu->addAction("Hide");
+	m_menu->addAction("Toggle");
+	m_trayicon->setContextMenu(m_menu);
+
+	QIcon kirigamiIcon = KIconLoader::global()->loadIcon(icon, KIconLoader::Toolbar);
+    m_trayicon->setIcon(kirigamiIcon);
+	m_trayicon->show();
+
+	connect(m_menu, &QMenu::triggered, this, &Embedder::menuAction);
+	connect(m_trayicon, &QSystemTrayIcon::activated, this, &Embedder::trayIconClicked);
+}
+
 int Embedder::pid(){
 	return m_pid;
 }
 
-void Embedder::setClass(const QString &Class){
-	m_class = Class;
-}
-
-void Embedder::setCmdToRaise(const bool &cmdToRaise){
-	m_cmdToRaise = cmdToRaise;
-}
-
-
-
 void Embedder::toggle(){
-	if(KX11Extras::activeWindow() == m_window->winId()){
+	if(isActiveClient()){
 		hide();
 	} else {
-		bool wasVisible = m_window->isVisible();
 		show();
-		if(m_window->isVisible() && wasVisible && m_cmdToRaise){
-			run(!true);
-			qWarning() << "relaunching";
-		}
 	}
 }
 
+bool Embedder::isActiveClient(){
+	return (kwin->activeClientId() == m_wid);
+}
+
 void Embedder::show(){
-	m_window->show();
-	m_window->raise();
-	m_window->requestActivate();
-	KX11Extras::forceActiveWindow(m_window->winId());
+	kwin->activateWindow(m_wid);
 }
 void Embedder::hide(){
-	m_window->hide();
+	kwin->hideWindow(m_wid);
 }
 
 void Embedder::setSize(const int &h, const int &w){
@@ -85,169 +88,36 @@ void Embedder::setSize(const int &h, const int &w){
 void Embedder::setPosition(const int &x, const int &y){
 	m_pos = QPoint(x, y);
 }
-
-
-
-bool Embedder::embed(const int &wid){
-
-	return true;
+void Embedder::setClass(const QString &Class){
+	m_class = Class;
+}
+void Embedder::setCmdToRaise(const bool &cmdToRaise){
+	m_cmdToRaise = cmdToRaise;
 }
 
-
-/*
-int Embedder::getWinID()
-{
-	// X11 only!
-	QString PId = QString::number(pid());
-	//qWarning() << "pid:" << PId;
-	QProcess *xdotool = new QProcess;
-	QStringList args;
-	args << "search" << "--onlyvisible" << "--pid" << PId;
-	xdotool->setProgram("xdotool");
-	xdotool->setArguments(args);
-	xdotool->start();
-	xdotool->waitForFinished(3000);
-	
-	QString output = QString::fromLocal8Bit(xdotool->readAllStandardOutput()).trimmed();
-	//qWarning() << args << "\n" << output;
-
-	int ID;
-	QStringList IDs = output.split("\n");
-	//qWarning() << IDs;
-	if(IDs.size() > 1){
-		// there are more than just one WId: take the last one
-		ID = IDs[IDs.size()-1].toInt();
-	} else if (output.size() < 1){
-		// no WId returned
-		ID = -1;
+bool Embedder::embed(const QString &Class){
+	setClass(Class);
+	QString id = kwin->searchWindow(Class).trimmed();
+	if(id.length() > 1){
+		m_wid = id;
+		return true;
 	} else {
-		// just one WId
-		ID = output.toInt();
-	}
-	
-	//qWarning() << "--->" << args << output << "-" << IDs << "=" << QString::number(ID);
-	return ID;
-}
-
-void Embedder::onWindowAdded(WId id){
-	auto windoInfo = KWindowInfo(id, NET::WMVisibleName, NET::WM2WindowClass);
-	//qWarning() << id << windoInfo.visibleName() << windoInfo.windowClassClass();
-	if(windoInfo.windowClassClass() == m_class){
-		if(m_wid < 1){
-			embed(id);
-		}
+		return false;
 	}
 }
 
-int Embedder::xdotool_getId(){
-	QProcess *xdotool = new QProcess;
-	QStringList args;
-	args << "search" << "--onlyvisible" << "--class" << m_class;
-	xdotool->setProgram("xdotool");
-	xdotool->setArguments(args);
-	xdotool->start();
-	xdotool->waitForFinished(3000);
-	
-	QString output = QString::fromLocal8Bit(xdotool->readAllStandardOutput()).trimmed();
 
-	int ID;
-	QStringList IDs = output.split("\n");
-	if(IDs.size() > 1){
-		// there are more than just one WId: take the last one
-		ID = IDs[IDs.size()-1].toInt();
-	} else if (output.size() < 1){
-		// no WId returned
-		ID = -1;
+void Embedder::menuAction(QAction *action){
+	if(action->text() == "Hide") {
+		hide();
+	} else if(action->text() == "Show") {
+		show();
+	} else if(action->text() == "Toggle") {
+		toggle();
 	} else {
-		// just one WId
-		ID = output.toInt();
-	}
-	return ID;
-}
-
-QStringList Embedder::qdbuskwin_getWidList(){
-	QDateTime datetime_now = QDateTime::currentDateTime();
-	QString since = datetime_now.toString(Qt::ISODateWithMs).replace("T", " ");
-
-	QProcess *kwin = new QProcess;
-	QString filename = QCoreApplication::applicationDirPath() + "/listWindows.js";
-	kwin->setProgram("dbus-send");
-	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/Scripting" << "org.kde.kwin.Scripting.loadScript" << "string:" + filename);
-	kwin->start();
-	kwin->waitForFinished();
-
-    QString output = QString::fromLocal8Bit(kwin->readAllStandardOutput());
-	QString script_number = output.trimmed().split(" ").constLast();
-
-	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.run");
-	kwin->start(); 
-	kwin->waitForFinished();
-	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.stop");
-	kwin->start(); 
-	kwin->waitForFinished();
-	
-	kwin->setProgram("journalctl");
-	kwin->setArguments(QStringList() << "/usr/bin/kwin_x11" << "--since" << since);
-	kwin->start();
-	kwin->waitForFinished();
-
-	QRegularExpression regex("^.*: js: >", QRegularExpression::MultilineOption);
-    QStringList res = QString::fromLocal8Bit(kwin->readAllStandardOutput()).trimmed().replace(regex, "").split("\n");
-	return res;
-}
-
-int Embedder::qdbuskwin_getId(){
-	//for (auto it = windows.rend(); it != windows.rbegin(); --it) {
-	for (auto w : qdbuskwin_getWidList()) {
-		WId window = w.toInt();
-		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
-		//qWarning() << window << windoInfo.visibleName() << windoInfo.windowm_className();
-		if(windoInfo.windowClassName() == m_class){
-			return window;
-		}
-	}
-	return -1;
-}
-
-int  Embedder::kwin_getId(){
-	// get window list
-	for(auto window : KWindowSystem::windows()){
-		auto windoInfo = KWindowInfo(window, NET::WMVisibleName, NET::WM2WindowClass);
-		if(windoInfo.windowClassClass() == m_class){
-			return window;
-		}
-	}
-	return -1;
-}
-
-void Embedder::updateGeometry(){
-	qWarning() << "updated geometry";
-	m_window->resize(m_size);
-	m_window->setPosition(m_pos);
-	// run another times otherwise it won't work, dunno why
-	m_window->resize(m_size);
-	m_window->setPosition(m_pos);
-}
-
-int Embedder::getId(){
-	if(m_forceMethod == "xdotool"){
-		return xdotool_getId();
-	} else if (m_forceMethod == "kwin"){
-		return kwin_getId();
-	} else if(m_forceMethod == ""){
-		if(KWindowSystem::isPlatformX11()){ // TODO tidy up
-			return kwin_getId();
-		} else {
-			qWarning() << "Error: Currently unsupported on this platform";
-			return -1;
-		}
-	} else {
-		qWarning() << "Error: Forced method unknow";
-		return -1;
+		qWarning() << "WARNING: unknown action detected:" << action->text();
 	}
 }
-
-
-
-
-*/
+void Embedder::trayIconClicked(){
+	toggle();
+}

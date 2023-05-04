@@ -4,10 +4,8 @@ add_subdirectory(./SingleApplication)
 add_executable(helloworld
 	main.cpp
 	resources.qrc
-	launcher.cpp
 	TrayIcon.cpp
 	Embedder.cpp
-	MainWindow.cpp
 	DbusKwin.cpp
 )
 

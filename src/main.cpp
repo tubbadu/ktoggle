@@ -11,7 +11,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include "launcher.h"
 #include "TrayIcon.h"
 #include "Embedder.h"
 #include "DbusKwin.h"
@@ -115,36 +114,16 @@ int main(int argc, char *argv[])
 		qWarning() << "Primary instance user: " << app.primaryUser();
 		return 0;
 	}
-
-	/*QQmlApplicationEngine engine;
-	qmlRegisterType<Launcher>("Launcher", 1, 0, "Launcher");
-	qmlRegisterType<TrayIcon>("TrayIcon", 1, 0, "TrayIcon");
-	qmlRegisterType<Embedder>("Embedder", 1, 0, "Embedder");
-
-	engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
-	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-	if (engine.rootObjects().isEmpty()) {
-		return -1;
-	}
-
 	
-	QObject* rootObject = engine.rootObjects().first();
-
-	QObject::connect( &app, &SingleApplication::receivedMessage, [&rootObject](int instanceId, QByteArray message) {
-		QMetaObject::invokeMethod(rootObject, "newRequest", Q_ARG(QVariant, instanceId), Q_ARG(QVariant, message));
-	});
-
-	QMetaObject::invokeMethod(rootObject, "newRequest", Q_ARG(QVariant, 0), Q_ARG(QVariant, parserToJs(parser)));
-	*/
-	DbusKwin *kwin = new DbusKwin;
 	Embedder *embedder = new Embedder;
+	qWarning() << "embedded? " << embedder->embed("org.telegram.desktop");
 
-	QObject::connect( &app, &SingleApplication::receivedMessage, [&embedder](int instanceId, QByteArray message) {
-		//QMetaObject::invokeMethod(rootObject, "newRequest", Q_ARG(QVariant, instanceId), Q_ARG(QVariant, message));
-	});
+	embedder->addTrayIcon("firefox");
+
+	/*QObject::connect( &app, &SingleApplication::receivedMessage, [&embedder](int instanceId, QByteArray message) {
+		
+	});*/
 	
-	kwin->activateWindow(kwin->searchWindow("org.telegram.desktop"));
 
 	return app.exec();
 }
