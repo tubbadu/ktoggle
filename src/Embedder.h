@@ -57,6 +57,9 @@ public:
 	Q_INVOKABLE void test();
 	Q_INVOKABLE QString identifier();
 	Q_INVOKABLE void setIdentifier(const QString &id);
+	Q_INVOKABLE QString searchId();
+	Q_INVOKABLE bool isStandalone();
+	Q_INVOKABLE void setStandalone(const bool &standalone);
 	void menuAction(QAction *action);
 	void trayIconClicked();
 /*
@@ -79,6 +82,7 @@ private:
 	QSystemTrayIcon *m_trayicon;
 	QMenu *m_menu;
 	QString m_identifier;
+	bool m_standalone;
 };
 
 #endif

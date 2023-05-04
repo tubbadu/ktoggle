@@ -13,6 +13,7 @@ Embedder::Embedder(QObject *parent) :
 	m_arguments = QStringList();
 	m_cmdToRaise = false;
 	m_identifier = "";
+	m_standalone = false;
 }
 
 int Embedder::run()
@@ -88,7 +89,18 @@ void Embedder::show(){
 	if(m_wid.length() < 2){
 		embed();
 	}
-	kwin->activateWindow(m_wid);
+	if(m_cmdToRaise){
+		//if(searchId().length() > 1){ // TODO improove time
+		//	kwin->activateWindow(m_wid);
+		//	qWarning() << "no need to run again, just raising";
+		//} else {
+			run(true);
+			qWarning() << "run to raise";
+		//	qWarning() << embed();
+		//}
+	} else {
+		kwin->activateWindow(m_wid);
+	}
 }
 void Embedder::hide(){
 	if(m_wid.length() < 2){
@@ -116,17 +128,7 @@ bool Embedder::embed(){
 		QCoreApplication::quit();
 	}
 
-	QString id;
-
-	if(m_name.length() > 0){
-		if(m_pid > 0){
-			id = kwin->searchWindow(m_class, m_name, QString::number(m_pid));
-		} else {
-			id = kwin->searchWindow(m_class, m_name);
-		}
-	} else {
-		id = kwin->searchWindow(m_class);
-	}
+	QString id = searchId();
 	
 	if(id.length() > 1){
 		m_wid = id;
@@ -184,4 +186,27 @@ QString Embedder::identifier(){
 
 void Embedder::setIdentifier(const QString &id){
 	m_identifier = id;
+}
+
+QString Embedder::searchId(){
+	QString id;
+
+	if(m_name.length() > 0){
+		if(m_pid > 0){
+			id = kwin->searchWindow(m_class, m_name, QString::number(m_pid));
+		} else {
+			id = kwin->searchWindow(m_class, m_name);
+		}
+	} else {
+		id = kwin->searchWindow(m_class);
+	}
+
+	return id;
+}
+
+bool Embedder::isStandalone(){
+	return m_standalone;
+}
+void Embedder::setStandalone(const bool &standalone){
+	m_standalone = standalone;
 }

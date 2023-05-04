@@ -16,42 +16,6 @@
 #include "DbusKwin.h"
 
 
-QByteArray parserToJs(const QCommandLineParser &parser){
-	QMap<QString, QString> map;
-
-	map["class"] = "windowClass";
-	map["name"] = "windowName";
-	map["program"] = "program";
-	map["icon"] = "icon";
-	map["no-tray"] = "noTray";
-	map["xy"] = "xy";
-	map["size"] = "size";
-	map["cmd-to-raise"] = "cmdToRaise";
-	
-	map["p"] = map["program"];
-	map["n"] = map["name"];
-	map["c"] = map["class"];
-	map["i"] = map["icon"];
-
-
-	QJsonObject parserJS;
-
-	qWarning() << parser.isSet("icon");
-
-	const QStringList options = map.keys(); //parser.optionNames();
-	for (const QString& option : options) {
-		if(parser.isSet(option)){
-			parserJS[map[option]] = parser.value(option);
-		} else {
-			qWarning() << option << "not set";
-		}
-	}
-
-	QJsonDocument docJS(parserJS);
-	return docJS.toJson();
-}
-
-
 Embedder* addWindow(QCommandLineParser *parser, const QString &id){
 	Embedder *embedder = new Embedder;
 	if(!parser->isSet("class")){
@@ -76,6 +40,7 @@ Embedder* addWindow(QCommandLineParser *parser, const QString &id){
 			embedder->move(parser->value("xy"));
 		}
 		embedder->setCmdToRaise(parser->isSet("cmd-to-raise"));
+		embedder->setStandalone(parser->isSet("standalone"));
 
 		if(!embedder->embed()){
 			qWarning() << "Not present, running it";
@@ -90,13 +55,24 @@ Embedder* addWindow(QCommandLineParser *parser, const QString &id){
 }
 
 bool newRequest(QList<Embedder*> *wList, QCommandLineParser *parser, const QString &id){
-	qWarning() << id;
+	qWarning() << "new request id:" << id;
+	Embedder *found = nullptr;
 	for(Embedder *e : *wList){
 		if(e->identifier() == id){
-			qWarning() << "Embedder already present!";
+			found = e; 
 			e->toggle();
-			return false;
+			break;
 		}
+	}
+
+	for(Embedder *e : *wList){
+		if(e->identifier() != id && !e->isStandalone() && !parser->isSet("standalone")){
+			e->hide();
+		}
+	}
+
+	if(found){
+		return true;
 	}
 	wList->append(addWindow(parser, id));
 	return true;
@@ -156,6 +132,10 @@ int main(int argc, char *argv[])
 		QCoreApplication::translate("main", "Raise window running the command each time. Use this for apps like Telegram that hide the window when minimized."));
 	parser.addOption(cmdToRaiseOption);
 
+	QCommandLineOption standaloneOption("standalone",
+		QCoreApplication::translate("main", "Does not get minimized when other windows are toggled and does not minimize other windows when toggled."));
+	parser.addOption(standaloneOption);
+
 	parser.process(app);
 
 
@@ -189,9 +169,9 @@ int main(int argc, char *argv[])
 		QDataStream dataStreamRead(message);
 		QStringList args;
 		dataStreamRead >> args;
-		qWarning() << args;
+		qWarning() << "args received" << args;
 		parser.process(args);
-		newRequest(&wList, &parser, QString(args.join(" ")));
+		newRequest(&wList, &parser, QString(args.mid(1).join(" ")));
 	});
 	
 	return app.exec();
