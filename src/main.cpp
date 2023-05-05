@@ -12,77 +12,79 @@
 #include <QJsonObject>
 
 #include "TrayIcon.h"
-#include "Embedder.h"
+#include "KwinController.h"
 #include "DbusKwin.h"
 
 
-Embedder* addWindow(QCommandLineParser *parser, const QString &id){
-	Embedder *embedder = new Embedder;
-	if(!parser->isSet("class")){
-		qWarning() << "ERROR: class unspecified";
+
+KwinController* newKwinController(QCommandLineParser *parser, const QString &id){
+	KwinController *kwinController = new KwinController;
+	if(!parser->isSet("class") || !parser->isSet("name")){
+		qWarning() << "ERROR: class and name cannot be unspecified";
 		parser->showHelp();
 	} else {
-		embedder->setClass(parser->value("class"));
+		kwinController->setClass(parser->value("class"));
+		kwinController->setName(parser->value("name"));
 
 		if(parser->isSet("program")){
-			embedder->setProgram(parser->value("program"));
+			kwinController->setProgram(parser->value("program"));
 		}
 		if(parser->isSet("icon")){
-			embedder->addTrayIcon(parser->value("icon"));
-		}
-		if(parser->isSet("name")){
-			embedder->setName(parser->value("name"));
+			kwinController->addTrayIcon(parser->value("icon"));
 		}
 		if(parser->isSet("size")){
-			embedder->setProgram(parser->value("size"));
+			kwinController->setProgram(parser->value("size"));
 		}
 		if(parser->isSet("xy")){			
-			embedder->move(parser->value("xy"));
+			kwinController->move(parser->value("xy"));
 		}
-		embedder->setCmdToRaise(parser->isSet("cmd-to-raise"));
-		embedder->setStandalone(parser->isSet("standalone"));
-
-		if(!embedder->embed()){
-			qWarning() << "Not present, running it";
-			// window not present: run and embed again
-			embedder->run();
-		} else {
-			qWarning() << "Already running";
-		}
+		kwinController->setStandalone(parser->isSet("standalone"));
 	}
-	embedder->setIdentifier(id);
-	return embedder;
+	kwinController->setIdentifier(id);
+	return kwinController;
 }
 
-bool newRequest(QList<Embedder*> *wList, QCommandLineParser *parser, const QString &id){
-	if(parser->isSet("minimize-all")){
-		for(Embedder *e : *wList){
+bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const QString &id){
+	// minimize all and exit if run with --minimize-all
+	if(parser->isSet("minimize-all")){ 
+		for(KwinController *e : *wList){
 			if(!e->isStandalone()){
 				e->hide();
 			}
 		}
+		return false;
 	}
-	qWarning() << "new request id:" << id;
-	Embedder *found = nullptr;
-	for(Embedder *e : *wList){
+
+	// find and toggle or run the requested window in wList
+	KwinController *found = nullptr;
+	for(KwinController *e : *wList){
 		if(e->identifier() == id){
-			found = e; 
-			e->toggle();
+			found = e;
+			if(!e->toggle()){
+				e->run();
+			}
 			break;
 		}
 	}
 
-	for(Embedder *e : *wList){
+	// minimize all other windows (not set as --standalone)
+	for(KwinController *e : *wList){
 		if(e->identifier() != id && !e->isStandalone() && !parser->isSet("standalone")){
 			e->hide();
 		}
 	}
 
 	if(found){
-		return true;
+		return false;
+	} else {
+		// requested window is not present in wList. Add it
+		KwinController *newE = newKwinController(parser, id);
+		wList->append(newE);
+		if(!newE->toggle()){
+			newE->run();
+		}
+		return !true;
 	}
-	wList->append(addWindow(parser, id));
-	return true;
 }
 
 int main(int argc, char *argv[])
@@ -135,10 +137,6 @@ int main(int argc, char *argv[])
 		QCoreApplication::translate("main", "Get a list of all active windows names and classes."));
 	parser.addOption(trayOption);
 
-	QCommandLineOption cmdToRaiseOption("cmd-to-raise",
-		QCoreApplication::translate("main", "Raise window running the command each time. Use this for apps like Telegram that hide the window when minimized."));
-	parser.addOption(cmdToRaiseOption);
-
 	QCommandLineOption standaloneOption("standalone",
 		QCoreApplication::translate("main", "Does not get minimized when other windows are toggled and does not minimize other windows when toggled."));
 	parser.addOption(standaloneOption);
@@ -152,7 +150,7 @@ int main(int argc, char *argv[])
 
 	if( app.isSecondary() ) {
 		if(parser.isSet("test")){
-			Embedder e;
+			KwinController e;
 			e.test();
 			return 0;
 		}
@@ -167,14 +165,14 @@ int main(int argc, char *argv[])
 	}
 
 	if(parser.isSet("test")){
-		Embedder e;
+		KwinController e;
 		e.test();
 		return 0;
 	}
 	
 
 
-	QList<Embedder*> wList;
+	QList<KwinController*> wList;
 
 	newRequest(&wList, &parser, QString(QCoreApplication::arguments().mid(1).join(" ")));
 	

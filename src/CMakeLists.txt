@@ -5,7 +5,7 @@ add_executable(ktoggle
 	main.cpp
 	resources.qrc
 	TrayIcon.cpp
-	Embedder.cpp
+	KwinController.cpp
 	DbusKwin.cpp
 )
 

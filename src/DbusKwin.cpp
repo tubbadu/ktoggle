@@ -286,9 +286,10 @@ bool DbusKwin::toggle(const QString wclass, const QString wname){
 			for (var i = 0; i < clients.length; i++) { \
 				var client = clients[i]; \
 				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					workspace.activeClient.skipPager = false; \
-					workspace.activeClient.skipSwitcher = false; \
-					workspace.activeClient.minimized = false; \
+					client.skipPager = false; \
+					client.skipSwitcher = false; \
+					client.minimized = false; \
+					workspace.activeClient = client; \
 					done = 1; break; \
 				} \
 			} \
@@ -297,6 +298,7 @@ bool DbusKwin::toggle(const QString wclass, const QString wname){
 	);
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
+	qWarning() << "toggle ret" << ret;
 	if(ret.length() > 0){
 		if(ret[0] == "1") {
 			return true;
@@ -317,9 +319,10 @@ bool DbusKwin::show(const QString wclass, const QString wname){
 			for (var i = 0; i < clients.length; i++) { \
 				var client = clients[i]; \
 				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					workspace.activeClient.skipPager = false; \
-					workspace.activeClient.skipSwitcher = false; \
-					workspace.activeClient.minimized = false; \
+					client.skipPager = false; \
+					client.skipSwitcher = false; \
+					client.minimized = false; \
+					workspace.activeClient = client; \
 					done = 1; break; \
 				} \
 			} \
@@ -351,9 +354,9 @@ bool DbusKwin::hide(const QString wclass, const QString wname){
 			for (var i = 0; i < clients.length; i++) { \
 				var client = clients[i]; \
 				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					workspace.activeClient.skipPager = true; \
-					workspace.activeClient.skipSwitcher = true; \
-					workspace.activeClient.minimized = true; \
+					client.skipPager = true; \
+					client.skipSwitcher = true; \
+					client.minimized = true; \
 					done = 1; break; \
 				} \
 			} \
