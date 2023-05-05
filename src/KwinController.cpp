@@ -80,6 +80,7 @@ void KwinController::addTrayIcon(const QString &icon){
 	m_menu->addAction("Show");
 	m_menu->addAction("Hide");
 	m_menu->addAction("Toggle");
+	m_menu->addAction("Quit " + m_class);
 	m_menu->addAction("Quit KToggle");
 	m_trayicon->setContextMenu(m_menu);
 
@@ -111,6 +112,9 @@ void KwinController::menuAction(QAction *action){
 		toggle();
 	} else if(action->text() == "Quit KToggle") {
 		QCoreApplication::quit();
+	} else if(action->text() == ("Quit " + m_class)){
+		qWarning() << "wants to die";
+		Q_EMIT wantsToDie();
 	} else {
 		qWarning() << "WARNING: unknown action detected:" << action->text();
 	}

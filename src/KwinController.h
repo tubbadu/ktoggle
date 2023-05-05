@@ -59,6 +59,9 @@ public:
 	void menuAction(QAction *action);
 	void trayIconClicked();
 
+signals:
+	void wantsToDie();
+
 private:
     QProcess *m_process;
 	QString m_wid;

@@ -79,6 +79,10 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 	} else {
 		// requested window is not present in wList. Add it
 		KwinController *newE = newKwinController(parser, id);
+		QObject::connect( newE, &KwinController::wantsToDie, [&wList]() {
+			qWarning() << "wants to die!";
+			// destroy newE-> TODO
+		});
 		wList->append(newE);
 		if(!newE->toggle()){
 			newE->run();
