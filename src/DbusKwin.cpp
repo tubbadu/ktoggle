@@ -98,7 +98,7 @@ QString DbusKwin::searchWindow(const QString wclass, const QString wname){
 		var clients = workspace.clientList(); \
 		for (var i = 0; i < clients.length; i++) { \
 			var client = clients[i]; \
-			if(client.resourceClass == wclass && client.resourceName.includes(wname){ \
+			if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
 				console.warn('>' + client.internalId); \
 				break; \
 			} \
@@ -245,4 +245,127 @@ void DbusKwin::test(){
 	);
 	QTextStream cout(stdout);
 	cout << runScript(createFile(script)).join("\n") << endl;
+}
+
+bool DbusKwin::existsId(const QString wid){
+	QString script(
+		"var wid = '$WID'; \
+		var clients = workspace.clientList(); \
+		let done = false; \
+		for (var i = 0; i < clients.length; i++) { \
+			var client = clients[i]; \
+			if(client.internalId == wid){ \
+				console.warn('>1'); \
+				done = true; break; \
+			} \
+		} \
+		if(!done){console.warn('>0');}"
+	);
+	script = script.replace("$WID", wid);
+	QStringList ret = runScript(createFile(script));
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DbusKwin::toggle(const QString wclass, const QString wname){
+	QString script(
+		"var wname = '$NAME'; \
+		var wclass = '$CLASS'; \
+		let done = 0; \
+		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			workspace.activeClient.skipPager = true; \
+			workspace.activeClient.skipSwitcher = true; \
+			workspace.activeClient.minimized = true; \
+			done = 1; \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					workspace.activeClient.skipPager = false; \
+					workspace.activeClient.skipSwitcher = false; \
+					workspace.activeClient.minimized = false; \
+					done = 1; break; \
+				} \
+			} \
+		} \
+		console.warn('>' + done);"
+	);
+	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
+	QStringList ret = runScript(createFile(script));
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DbusKwin::show(const QString wclass, const QString wname){
+	QString script(
+		"var wname = '$NAME'; \
+		var wclass = '$CLASS'; \
+		let done = 0; \
+		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			done = 1; \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					workspace.activeClient.skipPager = false; \
+					workspace.activeClient.skipSwitcher = false; \
+					workspace.activeClient.minimized = false; \
+					done = 1; break; \
+				} \
+			} \
+		} \
+		console.warn('>' + done);"
+	);
+	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
+	QStringList ret = runScript(createFile(script));
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DbusKwin::hide(const QString wclass, const QString wname){
+	QString script(
+		"var wname = '$NAME'; \
+		var wclass = '$CLASS'; \
+		let done = 0; \
+		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			workspace.activeClient.skipPager = true; \
+			workspace.activeClient.skipSwitcher = true; \
+			workspace.activeClient.minimized = true; \
+			done = 1; \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					workspace.activeClient.skipPager = true; \
+					workspace.activeClient.skipSwitcher = true; \
+					workspace.activeClient.minimized = true; \
+					done = 1; break; \
+				} \
+			} \
+		} \
+		console.warn('>' + done);"
+	);
+	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
+	QStringList ret = runScript(createFile(script));
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
 }

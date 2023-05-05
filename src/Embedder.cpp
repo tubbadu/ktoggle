@@ -71,9 +71,10 @@ int Embedder::pid(){
 }
 
 void Embedder::toggle(){
-	if(m_wid.length() < 2){
+	if(m_wid.length() < 2 || !kwin->existsId(m_wid)){
 		embed();
 	}
+	qWarning() << "toggling! " << m_wid << kwin->existsId(m_wid);
 	if(isActiveClient()){
 		hide();
 	} else {
@@ -82,12 +83,14 @@ void Embedder::toggle(){
 }
 
 bool Embedder::isActiveClient(){
+	qWarning() << "active id:" << kwin->activeClientId();
+	qWarning() << "m_wid:    " << m_wid;
 	return (kwin->activeClientId() == m_wid);
 }
 
 void Embedder::show(){
-	if(m_wid.length() < 2){
-		embed();
+	if(m_wid.length() < 2 || !kwin->existsId(m_wid)){
+		
 	}
 	if(m_cmdToRaise){
 		//if(searchId().length() > 1){ // TODO improove time
@@ -103,7 +106,7 @@ void Embedder::show(){
 	}
 }
 void Embedder::hide(){
-	if(m_wid.length() < 2){
+	if(m_wid.length() < 2 || !kwin->existsId(m_wid)){
 		embed();
 	}
 	kwin->hideWindow(m_wid);
@@ -120,22 +123,6 @@ void Embedder::setClass(const QString &Class){
 }
 void Embedder::setCmdToRaise(const bool &cmdToRaise){
 	m_cmdToRaise = cmdToRaise;
-}
-
-bool Embedder::embed(){
-	if(m_class.length() < 1){
-		qWarning() << "ERROR: Class unspecified.";
-		QCoreApplication::quit();
-	}
-
-	QString id = searchId();
-	
-	if(id.length() > 1){
-		m_wid = id;
-		return true;
-	} else {
-		return false;
-	}
 }
 
 void Embedder::menuAction(QAction *action){
@@ -209,4 +196,21 @@ bool Embedder::isStandalone(){
 }
 void Embedder::setStandalone(const bool &standalone){
 	m_standalone = standalone;
+}
+
+bool Embedder::embed(){
+	if(m_class.length() < 1){
+		qWarning() << "ERROR: Class unspecified.";
+		QCoreApplication::quit();
+	}
+
+	QString id = searchId();
+	
+	
+	if(id.length() > 1){
+		m_wid = id;
+		return true;
+	} else {
+		return false;
+	}
 }

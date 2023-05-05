@@ -30,6 +30,10 @@ public:
 	Q_INVOKABLE void resizeWindow(const QString &h, const QString &w);
 	Q_INVOKABLE void setWindowGeometry(const QString &x, const QString &y, const QString &h, const QString &w);
 	Q_INVOKABLE void test();
+	Q_INVOKABLE bool existsId(const QString wid);
+	Q_INVOKABLE bool toggle(const QString wclass, const QString wname);
+	Q_INVOKABLE bool hide(const QString wclass, const QString wname);
+	Q_INVOKABLE bool show(const QString wclass, const QString wname);
 
 
 private:

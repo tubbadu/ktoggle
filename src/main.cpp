@@ -55,6 +55,13 @@ Embedder* addWindow(QCommandLineParser *parser, const QString &id){
 }
 
 bool newRequest(QList<Embedder*> *wList, QCommandLineParser *parser, const QString &id){
+	if(parser->isSet("minimize-all")){
+		for(Embedder *e : *wList){
+			if(!e->isStandalone()){
+				e->hide();
+			}
+		}
+	}
 	qWarning() << "new request id:" << id;
 	Embedder *found = nullptr;
 	for(Embedder *e : *wList){
@@ -136,10 +143,19 @@ int main(int argc, char *argv[])
 		QCoreApplication::translate("main", "Does not get minimized when other windows are toggled and does not minimize other windows when toggled."));
 	parser.addOption(standaloneOption);
 
+	QCommandLineOption minimizeAllOption("minimize-all",
+		QCoreApplication::translate("main", "Minimize all windows that were not set as --standalone"));
+	parser.addOption(minimizeAllOption);
+
 	parser.process(app);
 
 
 	if( app.isSecondary() ) {
+		if(parser.isSet("test")){
+			Embedder e;
+			e.test();
+			return 0;
+		}
 		QByteArray data;
 		QDataStream dataStreamWrite(&data, QIODevice::WriteOnly);
 		dataStreamWrite << QCoreApplication::arguments();
@@ -156,11 +172,9 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 	
-	//parser.process(QStringList() << "ktoggle" <);
 
 
 	QList<Embedder*> wList;
-	//wList.append(addWindow(&parser));
 
 	newRequest(&wList, &parser, QString(QCoreApplication::arguments().mid(1).join(" ")));
 	
