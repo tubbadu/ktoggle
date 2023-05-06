@@ -1,19 +1,9 @@
-#include <QApplication>
 #include <singleapplication.h>
-#include <QQmlApplicationEngine>
-#include <QtQml>
-#include <QUrl>
 #include <KLocalizedContext>
 #include <KLocalizedString>
 #include <QCommandLineParser>
-#include <QVariant>
-#include <QJSValue>
-#include <QJsonDocument>
-#include <QJsonObject>
 
-#include "TrayIcon.h"
 #include "KwinController.h"
-#include "DbusKwin.h"
 
 
 
@@ -116,12 +106,12 @@ int main(int argc, char *argv[])
 	parser.addOption(nameOption);
 
 	QCommandLineOption programOption(QStringList() << "p" << "program",
-		QCoreApplication::translate("main", "Command to run program. May include optional flags."),
+		QCoreApplication::translate("main", "Command to run program. If it contains spaces, make sure to use quotes."),
 		QCoreApplication::translate("main", "program"));
 	parser.addOption(programOption);
 
 	QCommandLineOption iconOption(QStringList() << "i" << "icon",
-		QCoreApplication::translate("main", "Tray icon to display. If unspecified, window's own icon will be displayed."),
+		QCoreApplication::translate("main", "Add a system tray icon with the specified name or path."),
 		QCoreApplication::translate("main", "icon"));
 	parser.addOption(iconOption);
 
@@ -137,17 +127,17 @@ int main(int argc, char *argv[])
 	sizeOption.setDefaultValue("500,700");
 	parser.addOption(sizeOption);
 
-	QCommandLineOption trayOption("test",
-		QCoreApplication::translate("main", "Get a list of all active windows names and classes."));
-	parser.addOption(trayOption);
-
 	QCommandLineOption standaloneOption("standalone",
 		QCoreApplication::translate("main", "Does not get minimized when other windows are toggled and does not minimize other windows when toggled."));
 	parser.addOption(standaloneOption);
 
 	QCommandLineOption minimizeAllOption("minimize-all",
-		QCoreApplication::translate("main", "Minimize all windows that were not set as --standalone"));
+		QCoreApplication::translate("main", "Minimize all windows that were not set as standalone."));
 	parser.addOption(minimizeAllOption);
+
+	QCommandLineOption trayOption("test",
+		QCoreApplication::translate("main", "Get a list of all active windows names and classes. Use this to check the correct class and name for your application."));
+	parser.addOption(trayOption);
 
 	parser.process(app);
 

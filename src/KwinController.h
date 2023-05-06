@@ -1,26 +1,18 @@
 #ifndef KWINCONTROLLER_H
 #define KWINCONTROLLER_H
-// TODO remove unused libraries (also in cmake!)
+
 #include <QObject>
 #include <QProcess>
-#include <QWindow>
 #include <QWidget>
 #include <QDebug>
 #include <QPoint>
 #include <QSize>
-#include <QMainWindow>
-#include <QWindow>
 #include <QElapsedTimer>
 #include <unistd.h>
 #include <KWindowSystem>
-#include <KX11Extras>
-#include <KWindowInfo>
-#include <QDateTime>
 #include <QRegularExpression>
 #include <QCoreApplication>
 #include <KIconThemes/KIconLoader>
-#include <QSystemTrayIcon>
-#include <QIcon>
 #include <QMenu>
 #include <QAction>
 

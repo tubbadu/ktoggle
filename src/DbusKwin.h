@@ -8,9 +8,11 @@
 #include <QDateTime>
 #include <QRegularExpression>
 #include <QIODevice>
+#include <KWindowSystem>
+
 #include <QDebug>
 #include <unistd.h>
-#include <KWindowSystem>
+
 
 class DbusKwin : public QObject
 {
