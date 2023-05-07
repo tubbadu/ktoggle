@@ -21,8 +21,8 @@ required flags:
 
 optional flags: 
 - `--icon myIcon` 			Add a system tray icon with the specified name or path.
-- `--xy <x,y>`				Forces window position to x and y coordinates.
-- `--size <height,width>`	Forces size of the window.
+- `--xy <x,y>`				Forces window position to x and y coordinates. (Not supported yet)
+- `--size <height,width>`	Forces size of the window. (Not supported yet)
 - `--standalone`			Does not get minimized when other windows are toggled and does not minimize other windows when toggled.
 - `--minimize-all`			Minimize all windows that were not set as standalone.
 - `--test`					Get a list of all active windows names and classes. Use this to check the correct class and name for your application.
@@ -43,3 +43,10 @@ cd build
 sudo make install
 ```
 
+## TODO:
+* [ ] better readme
+* [ ] size/position feature
+* [ ] at every call, check if the saved processes in wList are still alive, and if not remove from the list (low importance)
+* [ ] tray's action "close this window" should actually kill that process (only closing the window may not work)
+* [ ] optional: move to current desktop before showing up (using `--to-desktop` flag)
+* [ ] remake using https://api.kde.org/frameworks/kwayland/html/classKWayland_1_1Server_1_1PlasmaWindowInterface.html
