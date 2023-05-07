@@ -3,7 +3,6 @@ add_subdirectory(./SingleApplication)
 
 add_executable(ktoggle
 	main.cpp
-	resources.qrc
 	TrayIcon.cpp
 	KwinController.cpp
 	DbusKwin.cpp

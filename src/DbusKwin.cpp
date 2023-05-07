@@ -5,9 +5,6 @@ DbusKwin::DbusKwin(QObject *parent) :
 {
 }
 
-
-
-
 QStringList DbusKwin::runScript(const QString filename){
 	QString platform;
 	if(KWindowSystem::isPlatformWayland()){
@@ -202,7 +199,7 @@ void DbusKwin::moveWindow(const QString &x, const QString &y){
 		};"
 	);
 	script = script.replace("$X", x).replace("$Y", y);
-	runScript(createFile(script));
+	qWarning() << "moved? " << runScript(createFile(script));
 }
 
 void DbusKwin::resizeWindow(const QString &h, const QString &w){
@@ -237,14 +234,15 @@ void DbusKwin::test(){
 		const maxLength = clients.reduce((max, current) => { \
 			return current.resourceClass.length > max ? current.resourceClass.length : max; \
 		}, 0); \
-		console.warn('>' + 'Class'.padEnd(maxLength + 5, ' ') + 'Name'); \
-		console.warn('>'); \
+		console.warn('>' + 'Class'.padEnd(maxLength + 5, ' ') + 'Name'.padEnd(maxLength + 5, ' ')); \
 		for(var i=0; i<clients.length; i++){ \
 			console.warn('>' + clients[i].resourceClass.padEnd(maxLength + 5, ' ') + clients[i].resourceName); \
 		}"
 	);
 	QTextStream cout(stdout);
-	cout << runScript(createFile(script)).join("\n") << endl;
+	QStringList res = runScript(createFile(script));
+	cout << "\033[1m" + res[0] + "\033[0m"<< endl;
+	cout << res.mid(1).join("\n") << endl;
 }
 
 bool DbusKwin::existsId(const QString wid){
@@ -298,7 +296,7 @@ bool DbusKwin::toggle(const QString wclass, const QString wname){
 	);
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
-	qWarning() << "toggle ret" << ret;
+
 	if(ret.length() > 0){
 		if(ret[0] == "1") {
 			return true;

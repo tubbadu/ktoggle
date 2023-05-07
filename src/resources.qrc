@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="main.qml">contents/ui/main.qml</file>
-		<file alias="KToggle.qml">contents/ui/KToggle.qml</file>
-		<file alias="create-component.js">contents/ui/create-component.js</file>
-    </qresource>
-</RCC>
- 

@@ -93,6 +93,10 @@ void KwinController::addTrayIcon(const QString &icon){
 }
 
 bool KwinController::toggle(){
+	if(true){
+		qWarning() << "moving";
+		move("30,30"); // not working
+	}
 	return kwin->toggle(m_class, m_name);
 }
 

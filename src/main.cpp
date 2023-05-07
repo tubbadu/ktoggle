@@ -116,13 +116,13 @@ int main(int argc, char *argv[])
 	parser.addOption(iconOption);
 
 	QCommandLineOption xyOption(QStringList() << "xy",
-		QCoreApplication::translate("main", "x and y coordinates of the window."),
+		QCoreApplication::translate("main", "x and y coordinates of the window. NOT IMPLEMENTED YET"),
 		QCoreApplication::translate("main", "x,y"));
 	xyOption.setDefaultValue("0,0");
 	parser.addOption(xyOption);
 
 	QCommandLineOption sizeOption(QStringList() << "size",
-		QCoreApplication::translate("main", "Size of the window."),
+		QCoreApplication::translate("main", "Size of the window. NOT IMPLEMENTED YET"),
 		QCoreApplication::translate("main", "height,width"));
 	sizeOption.setDefaultValue("500,700");
 	parser.addOption(sizeOption);
