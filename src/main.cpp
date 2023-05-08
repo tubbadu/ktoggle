@@ -4,7 +4,11 @@
 #include <QCommandLineParser>
 
 #include "KwinController.h"
+#include "Embedder.h"
 
+#include <KWayland/Client/registry.h>
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/plasmawindowmanagement.h>
 
 
 KwinController* newKwinController(QCommandLineParser *parser, const QString &id){
@@ -33,6 +37,7 @@ KwinController* newKwinController(QCommandLineParser *parser, const QString &id)
 	kwinController->setIdentifier(id);
 	return kwinController;
 }
+
 
 bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const QString &id){
 	// minimize all and exit if run with --minimize-all
@@ -83,6 +88,9 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 
 int main(int argc, char *argv[])
 {
+	
+
+
 	SingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	SingleApplication app(argc, argv, true);
 	KLocalizedString::setApplicationDomain("ktoggle");
@@ -90,6 +98,35 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationDomain(QStringLiteral("kde.org"));
 	QCoreApplication::setApplicationName(QStringLiteral("KToggle"));
 	QCoreApplication::setApplicationVersion("1.0");
+
+
+	KWayland::Client::Registry *registry = new KWayland::Client::Registry(&app);
+	KWayland::Client::PlasmaWindowManagement *p; // = registry->createPlasmaWindowManagement("org.kde.PlasmaShell", "1.0");
+	qWarning() << "helo";
+	//qWarning() << p->windows();
+
+
+
+
+	QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced, &app, [&](quint32 name, quint32 version) {
+		// Create a PlasmaShell object to access the list of windows
+		p = registry->createPlasmaWindowManagement(name, version, &app);
+		qWarning() << "added" << p->windows();
+		/*QObject::connect(shell, &KWayland::Client::PlasmaShell::surfaceAdded, &app, [](KWayland::Client::PlasmaShellSurface *surface) {
+			// Get the id of each window and print it to the console
+			auto windowId = surface->windowId();
+			qInfo() << "Window ID:" << windowId;
+		});*/
+	});
+
+	qWarning() << "exiting";
+	return app.exec();
+
+
+
+
+
+
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription("KToggle, a tool to toggle any app");

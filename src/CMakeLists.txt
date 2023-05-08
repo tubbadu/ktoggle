@@ -12,7 +12,7 @@ add_executable(ktoggle
 find_package(KF5IconThemes)
 find_package(Qt5 COMPONENTS Core Gui REQUIRED)
 find_package(KF5 REQUIRED COMPONENTS WindowSystem)
-
+find_package(KF5Wayland)
 
 target_link_libraries(ktoggle
 	Qt5::Gui
@@ -22,4 +22,6 @@ target_link_libraries(ktoggle
 	KF5::IconThemes
 	SingleApplication::SingleApplication
 	KF5::WindowSystem
+	KF5::WaylandClient
+	KF5::WaylandServer
 ) 
