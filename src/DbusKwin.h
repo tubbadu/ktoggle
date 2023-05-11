@@ -22,24 +22,15 @@ public:
 
 	Q_INVOKABLE QStringList runScript(const QString filename);
 	Q_INVOKABLE QString createFile(const QString filecontent);
-	Q_INVOKABLE QString searchWindow(const QString wclass, const QString wname, const QString wpid);
-	Q_INVOKABLE QString searchWindow(const QString wclass, const QString wname);
-	Q_INVOKABLE QString searchWindow(const QString wclass);
-	Q_INVOKABLE bool activateWindow(const QString wid);
-	Q_INVOKABLE QString activeClientId();
-	Q_INVOKABLE void hideWindow(const QString wid);
-	Q_INVOKABLE void moveWindow(const QString &x, const QString &y);
-	Q_INVOKABLE void resizeWindow(const QString &h, const QString &w);
-	Q_INVOKABLE void setWindowGeometry(const QString &x, const QString &y, const QString &h, const QString &w);
 	Q_INVOKABLE void test();
-	Q_INVOKABLE bool existsId(const QString wid);
-	
-	Q_INVOKABLE bool toggle(const QString wclass, const QString wname);
+	Q_INVOKABLE bool toggle(const QString wclass, const QString wname, const bool &followDesktop);
 	Q_INVOKABLE bool hide(const QString wclass, const QString wname);
 	Q_INVOKABLE bool show(const QString wclass, const QString wname);
 	Q_INVOKABLE bool move(const QString wclass, const QString wname, const QString x, const QString y);
 	Q_INVOKABLE bool resize(const QString wclass, const QString wname, const QString height, const QString width);
 	Q_INVOKABLE bool setGeometry(const QString wclass, const QString wname, const QString x, const QString y, const QString height, const QString width);
+
+	Q_INVOKABLE QString composeScript(const QString &actionsBeginning, const QString &actionsActive, const QString &actionsInactive, const QString actionsEnd);
 
 
 

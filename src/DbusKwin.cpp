@@ -65,169 +65,6 @@ QString DbusKwin::createFile(const QString filecontent){
 	return QString();
 }
 
-QString DbusKwin::searchWindow(const QString wclass, const QString wname, const QString wpid){
-	QString script(
-		"var wclass = '$CLASS'; \
-		var wname = '$NAME'; \
-		var wpid = '$PID'; \
-		var clients = workspace.clientList(); \
-		for (var i = 0; i < clients.length; i++) { \
-			var client = clients[i]; \
-			if(client.resourceClass == wclass && client.resourceName.includes(wname) && client.pid !== wpid){ \
-				console.warn('>' + client.internalId); \
-				break; \
-			} \
-		}"
-	);
-	script = script.replace("$CLASS", wclass).replace("$NAME", wname).replace("$PID", wpid);
-	QStringList ret = runScript(createFile(script));
-	if(ret.length() > 0){
-		return ret[0];
-	} else {
-		return QString("");
-	}
-}
-
-QString DbusKwin::searchWindow(const QString wclass, const QString wname){
-	QString script(
-		"var wclass = '$CLASS'; \
-		var wname = '$NAME'; \
-		var clients = workspace.clientList(); \
-		for (var i = 0; i < clients.length; i++) { \
-			var client = clients[i]; \
-			if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-				console.warn('>' + client.internalId); \
-				break; \
-			} \
-		}"
-	);
-	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
-	QStringList ret = runScript(createFile(script));
-	if(ret.length() > 0){
-		return ret[0];
-	} else {
-		return QString();
-	}
-}
-
-QString DbusKwin::searchWindow(const QString wclass){
-	QString script( 
-		"var wclass = '$CLASS'; \
-		var clients = workspace.clientList(); \
-		for (var i = 0; i < clients.length; i++) { \
-			var client = clients[i]; \
-			if(client.resourceClass == wclass){ \
-				console.warn('>' + client.internalId); \
-				break; \
-			} \
-		}"
-	);
-	script = script.replace("$CLASS", wclass);
-	QStringList ret = runScript(createFile(script));
-	if(ret.length() > 0){
-		return ret[0];
-	} else {
-		return QString();
-	}
-}
-
-bool DbusKwin::activateWindow(const QString wid){
-	QString script(
-		"var wid = '$WID'; \
-		var clients = workspace.clientList(); \
-		let done = false; \
-		for (var i = 0; i < clients.length; i++) { \
-			var client = clients[i]; \
-			if(client.internalId == wid){ \
-				workspace.activeClient = client; \
-				client.skipTaskbar = false; \
-				client.skipPager = false; \
-				client.skipSwitcher = false; \
-				console.warn('>0'); \
-				done = true; break; \
-			} \
-		} \
-		if(!done){console.warn('>1');}"
-	);
-	script = script.replace("$WID", wid);
-	QStringList ret = runScript(createFile(script));
-	if(ret.length() > 0){
-		if(ret[0] == "0") {
-			return true;
-		}
-	}
-	return false;
-}
-
-QString DbusKwin::activeClientId(){
-	QString script(
-		"console.warn('>' + workspace.activeClient.internalId);"
-	);
-	QStringList ret = runScript(createFile(script));
-	if(ret.length() > 0){
-		return ret[0];
-	} else {
-		return QString();
-	}
-}
-
-void DbusKwin::hideWindow(const QString wid){
-	QString script(
-		"var wid = '$WID'; \
-		var clients = workspace.clientList(); \
-		for (var i = 0; i < clients.length; i++) { \
-			var client = clients[i]; \
-			if(client.internalId == wid){ \
-				client.skipPager = true; \
-				client.skipSwitcher = true; \
-				client.minimized = true; \
-			} \
-		}"
-	); // 				client.skipTaskbar = true; // gives error boh
-
-	script = script.replace("$WID", wid);
-	runScript(createFile(script));
-}
-
-void DbusKwin::moveWindow(const QString &x, const QString &y){
-	QString script(
-		"client.geometry = { \
-			x: $X, \
-			y: $Y, \
-			width: client.width, \
-			height: client.height \
-		};"
-	);
-	script = script.replace("$X", x).replace("$Y", y);
-	qWarning() << "moved? " << runScript(createFile(script));
-}
-
-void DbusKwin::resizeWindow(const QString &h, const QString &w){
-	QString script(
-		"client.geometry = { \
-			x: client.x, \
-			y: client.y, \
-			width: $WIDTH, \
-			height: $HEIGHT \
-		};"
-	);
-	script = script.replace("$HEIGHT", h).replace("$WIDTH", w);
-	runScript(createFile(script));
-}
-
-void DbusKwin::setWindowGeometry(const QString &x, const QString &y, const QString &h, const QString &w){
-	QString script(
-		"client.geometry = { \
-			x: $X, \
-			y: $Y, \
-			width: $WIDTH, \
-			height: $HEIGHT \
-		};"
-	);
-	script = script.replace("$HEIGHT", h).replace("$WIDTH", w).replace("$X", x).replace("$Y", y);
-	runScript(createFile(script));
-}
-
 void DbusKwin::test(){
 	QString script(
 		"let clients = workspace.clientList(); \
@@ -245,58 +82,38 @@ void DbusKwin::test(){
 	cout << res.mid(1).join("\n") << Qt::endl;
 }
 
-bool DbusKwin::existsId(const QString wid){
-	QString script(
-		"var wid = '$WID'; \
-		var clients = workspace.clientList(); \
-		let done = false; \
-		for (var i = 0; i < clients.length; i++) { \
-			var client = clients[i]; \
-			if(client.internalId == wid){ \
-				console.warn('>1'); \
-				done = true; break; \
-			} \
-		} \
-		if(!done){console.warn('>0');}"
-	);
-	script = script.replace("$WID", wid);
-	QStringList ret = runScript(createFile(script));
-	if(ret.length() > 0){
-		if(ret[0] == "1") {
-			return true;
-		}
-	}
-	return false;
-}
 
-bool DbusKwin::toggle(const QString wclass, const QString wname){
-	QString script(
-		"var wname = '$NAME'; \
+bool DbusKwin::toggle(const QString wclass, const QString wname, const bool &followDesktop){
+	qWarning() << "toggling";
+	QString actionsBeginning = QString(" \
+		var wname = '$NAME'; \
 		var wclass = '$CLASS'; \
 		let done = 0; \
-		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
-			workspace.activeClient.skipPager = true; \
-			workspace.activeClient.skipSwitcher = true; \
-			workspace.activeClient.minimized = true; \
-			done = 1; \
-		} else { \
-			var clients = workspace.clientList(); \
-			for (var i = 0; i < clients.length; i++) { \
-				var client = clients[i]; \
-				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					client.skipPager = false; \
-					client.skipSwitcher = false; \
-					client.minimized = false; \
-					workspace.activeClient = client; \
-					done = 1; break; \
-				} \
-			} \
-		} \
-		console.warn('>' + done);"
-	);
+	");
+	QString actionsActive = QString(" \
+		client.skipPager = true; \
+		client.skipSwitcher = true; \
+		client.minimized = true; \
+		done=1; \
+	");
+	QString actionsInactive = QString(" \
+		client.skipPager = false; \
+		client.skipSwitcher = false; \
+		client.minimized = false; \
+		workspace.activeClient = client; \
+		done=1; \
+	");
+	if(followDesktop){
+		actionsInactive = "client.desktop = workspace.currentDesktop; " + actionsInactive;
+	}
+
+	QString actionsEnd = QString("console.warn('>' + done);");
+
+	QString script = composeScript(actionsBeginning, actionsActive, actionsInactive, actionsEnd);
+
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
-
+	qWarning() << "ret=" << ret;
 	if(ret.length() > 0){
 		if(ret[0] == "1") {
 			return true;
@@ -306,35 +123,25 @@ bool DbusKwin::toggle(const QString wclass, const QString wname){
 }
 
 bool DbusKwin::move(const QString wclass, const QString wname, const QString x, const QString y){
-	QString script(
-		"var wname = '$NAME'; \
+	QString actionsBeginning = QString(" \
+		var wname = '$NAME'; \
 		var wclass = '$CLASS'; \
 		let done = 0; \
-		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
-			workspace.activeClient.geometry = { \
-				x: $X, \
-				y: $Y, \
-				width: workspace.activeClient.width, \
-				height: workspace.activeClient.height \
-			}; \
-			done = 1; \
-		} else { \
-			var clients = workspace.clientList(); \
-			for (var i = 0; i < clients.length; i++) { \
-				var client = clients[i]; \
-				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					client.geometry = { \
-						x: $X, \
-						y: $Y, \
-						width: client.width, \
-						height: client.height \
-					}; \
-					done = 1; break; \
-				} \
-			} \
-		} \
-		console.warn('>' + done);"
-	);
+	");
+	QString actionsActive = QString(" \
+		client.geometry = { \
+			x: $X, \
+			y: $Y, \
+			width: client.width, \
+			height: client.height \
+		}; \
+		done = 1; \
+	");
+	QString actionsInactive = actionsActive + "break;";
+	QString actionsEnd = QString("console.warn('>' + done);");
+
+	QString script = composeScript(actionsBeginning, actionsActive, actionsInactive, actionsEnd);
+
 	script = script.replace("$X", x).replace("$Y", y).replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
 
@@ -347,35 +154,25 @@ bool DbusKwin::move(const QString wclass, const QString wname, const QString x, 
 }
 
 bool DbusKwin::resize(const QString wclass, const QString wname, const QString height, const QString width){
-	QString script(
-		"var wname = '$NAME'; \
+	QString actionsBeginning = QString(" \
+		var wname = '$NAME'; \
 		var wclass = '$CLASS'; \
 		let done = 0; \
-		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
-			workspace.activeClient.geometry = { \
-				x: workspace.activeClient.x, \
-				y: workspace.activeClient.y, \
-				width: $WIDTH, \
-				height: $HEIGHT \
-			}; \
-			done = 1; \
-		} else { \
-			var clients = workspace.clientList(); \
-			for (var i = 0; i < clients.length; i++) { \
-				var client = clients[i]; \
-				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					client.geometry = { \
-						x: client.x, \
-						y: client.y, \
-						width: $WIDTH, \
-						height: $HEIGHT \
-					}; \
-					done = 1; break; \
-				} \
-			} \
-		} \
-		console.warn('>' + done);"
-	);
+	");
+	QString actionsActive = QString(" \
+		client.geometry = { \
+			x: client.x, \
+			y: client.y, \
+			width: $WIDTH, \
+			height: $HEIGHT \
+		}; \
+		done = 1; \
+	");
+	QString actionsInactive = actionsActive + "break;";
+	QString actionsEnd = QString("console.warn('>' + done);");
+
+	QString script = composeScript(actionsBeginning, actionsActive, actionsInactive, actionsEnd);
+
 	script = script.replace("$WIDTH", width).replace("$HEIGHT", height).replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
 
@@ -388,35 +185,25 @@ bool DbusKwin::resize(const QString wclass, const QString wname, const QString h
 }
 
 bool DbusKwin::setGeometry(const QString wclass, const QString wname, const QString x, const QString y, const QString height, const QString width){
-	QString script(
-		"var wname = '$NAME'; \
+	QString actionsBeginning = QString(" \
+		var wname = '$NAME'; \
 		var wclass = '$CLASS'; \
 		let done = 0; \
-		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
-			workspace.activeClient.geometry = { \
-				x: $X, \
-				y: $Y, \
-				width: $WIDTH, \
-				height: $HEIGHT \
-			}; \
+	");
+	QString actionsActive = QString(" \
+		client.geometry = { \
+			x: $X, \
+			y: $Y, \
+			width: $WIDTH, \
+			height: $HEIGHT \
 			done = 1; \
-		} else { \
-			var clients = workspace.clientList(); \
-			for (var i = 0; i < clients.length; i++) { \
-				var client = clients[i]; \
-				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					client.geometry = { \
-						x: $X, \
-						y: $Y, \
-						width: $WIDTH, \
-						height: $HEIGHT \
-					}; \
-					done = 1; break; \
-				} \
-			} \
-		} \
-		console.warn('>' + done);"
-	);
+		}; \
+	");
+	QString actionsInactive = actionsActive + "break;";
+	QString actionsEnd = QString("console.warn('>' + done);");
+
+	QString script = composeScript(actionsBeginning, actionsActive, actionsInactive, actionsEnd);
+
 	script = script.replace("$WIDTH", width).replace("$HEIGHT", height).replace("$X", x).replace("$Y", y).replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
 
@@ -429,27 +216,23 @@ bool DbusKwin::setGeometry(const QString wclass, const QString wname, const QStr
 }
 
 bool DbusKwin::show(const QString wclass, const QString wname){
-	QString script(
-		"var wname = '$NAME'; \
+	QString actionsBeginning = QString(" \
+		var wname = '$NAME'; \
 		var wclass = '$CLASS'; \
 		let done = 0; \
-		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
-			done = 1; \
-		} else { \
-			var clients = workspace.clientList(); \
-			for (var i = 0; i < clients.length; i++) { \
-				var client = clients[i]; \
-				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					client.skipPager = false; \
-					client.skipSwitcher = false; \
-					client.minimized = false; \
-					workspace.activeClient = client; \
-					done = 1; break; \
-				} \
-			} \
-		} \
-		console.warn('>' + done);"
-	);
+	");
+	QString actionsActive = QString("done = 1");
+	QString actionsInactive = QString(" \
+		client.skipPager = false; \
+		client.skipSwitcher = false; \
+		client.minimized = false; \
+		workspace.activeClient = client; \
+		done = 1; break; \
+	");;
+	QString actionsEnd = QString("console.warn('>' + done);");
+
+	QString script = composeScript(actionsBeginning, actionsActive, actionsInactive, actionsEnd);
+
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
 	if(ret.length() > 0){
@@ -461,29 +244,22 @@ bool DbusKwin::show(const QString wclass, const QString wname){
 }
 
 bool DbusKwin::hide(const QString wclass, const QString wname){
-	QString script(
-		"var wname = '$NAME'; \
+	QString actionsBeginning = QString(" \
+		var wname = '$NAME'; \
 		var wclass = '$CLASS'; \
 		let done = 0; \
-		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
-			workspace.activeClient.skipPager = true; \
-			workspace.activeClient.skipSwitcher = true; \
-			workspace.activeClient.minimized = true; \
-			done = 1; \
-		} else { \
-			var clients = workspace.clientList(); \
-			for (var i = 0; i < clients.length; i++) { \
-				var client = clients[i]; \
-				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
-					client.skipPager = true; \
-					client.skipSwitcher = true; \
-					client.minimized = true; \
-					done = 1; break; \
-				} \
-			} \
-		} \
-		console.warn('>' + done);"
-	);
+	");
+	QString actionsActive = QString(" \
+		client.skipPager = true; \
+		client.skipSwitcher = true; \
+		client.minimized = true; \
+		done = 1; \
+	");
+	QString actionsInactive = actionsActive + "break;";
+	QString actionsEnd = QString("console.warn('>' + done);");
+
+	QString script = composeScript(actionsBeginning, actionsActive, actionsInactive, actionsEnd);
+
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
 	if(ret.length() > 0){
@@ -492,4 +268,21 @@ bool DbusKwin::hide(const QString wclass, const QString wname){
 		}
 	}
 	return false;
+}
+
+
+QString DbusKwin::composeScript(const QString &actionsBeginning, const QString &actionsActive, const QString &actionsInactive, const QString actionsEnd){
+	return QString(actionsBeginning + 
+		"if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			var client = workspace.activeClient; \
+			" + actionsActive + " \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					" + actionsInactive + " \
+				} \
+			} \
+		}" + actionsEnd);
 }

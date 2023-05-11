@@ -34,6 +34,8 @@ public:
 	Q_INVOKABLE void setName(const QString &Name);
 	Q_INVOKABLE void setIdentifier(const QString &id);
 	Q_INVOKABLE void setStandalone(const bool &standalone);
+	Q_INVOKABLE void setForceGeometry(const bool &forceGeometry);
+	Q_INVOKABLE void setFollowDesktop(const bool &followDesktop);
 
 	Q_INVOKABLE QString identifier();
 	Q_INVOKABLE bool isStandalone();
@@ -45,6 +47,7 @@ public:
 	Q_INVOKABLE bool move();
 	Q_INVOKABLE bool resize();
 	Q_INVOKABLE bool setGeometry();
+	Q_INVOKABLE bool applyGeometry();
 	
 	Q_INVOKABLE void test();	
 	
@@ -66,6 +69,8 @@ private:
 	QMenu *m_menu;
 	QString m_identifier;
 	bool m_standalone;
+	bool m_followDesktop;
+	bool m_forceGeometry;
 };
 
 #endif

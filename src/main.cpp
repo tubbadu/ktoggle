@@ -27,40 +27,11 @@ KwinController* newKwinController(QCommandLineParser *parser, const QString &id)
 			kwinController->setPosition(parser->value("xy"));
 		}
 		kwinController->setStandalone(parser->isSet("standalone"));
+		kwinController->setForceGeometry(parser->isSet("force-geometry"));
+		kwinController->setFollowDesktop(parser->isSet("follow-desktop"));
 	}
 	kwinController->setIdentifier(id);
 	return kwinController;
-}
-
-bool setGeometry(KwinController *e, bool setPos, bool setSize){
-	if(setPos){
-		if(setSize){
-			for(int i=0; i<3000; i++){
-				if(e->setGeometry()){
-					return true;
-				} else {
-					sleep(0.1);
-				}
-			}
-		} else {
-			for(int i=0; i<3000; i++){
-				if(e->move()){
-					return true;
-				} else {
-					sleep(0.1);
-				}
-			}
-		}
-	} else if(setSize) {
-		for(int i=0; i<3000; i++){
-			if(e->resize()){
-				return true;
-			} else {
-				sleep(0.1);
-			}
-		}
-	}
-	return false;
 }
 
 bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const QString &id){
@@ -95,7 +66,6 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 	}
 
 	if(found){
-		setGeometry(found, parser->isSet("xy"), parser->isSet("size"));
 		return false;
 	} else {
 		// requested window is not present in wList. Add it
@@ -108,7 +78,6 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 		if(!newE->toggle()){
 			newE->run();
 		}
-		setGeometry(newE, parser->isSet("xy"), parser->isSet("size"));
 		return !true;
 	}
 }
@@ -148,16 +117,24 @@ int main(int argc, char *argv[])
 	parser.addOption(iconOption);
 
 	QCommandLineOption xyOption(QStringList() << "xy",
-		QCoreApplication::translate("main", "x and y coordinates of the window. NOT IMPLEMENTED YET"),
+		QCoreApplication::translate("main", "Initial x and y coordinates of the window."),
 		QCoreApplication::translate("main", "x,y"));
 	xyOption.setDefaultValue("0,0");
 	parser.addOption(xyOption);
 
 	QCommandLineOption sizeOption(QStringList() << "size",
-		QCoreApplication::translate("main", "Size of the window. NOT IMPLEMENTED YET"),
+		QCoreApplication::translate("main", "Initial size of the window."),
 		QCoreApplication::translate("main", "height,width"));
 	sizeOption.setDefaultValue("500,700");
 	parser.addOption(sizeOption);
+
+	QCommandLineOption forceGeometryOption("force-geometry",
+		QCoreApplication::translate("main", "Forces the <size> and/or <xy> everytime the window is shown or hidden. If not set, these parameter will be only set when the app is launched."));
+	parser.addOption(forceGeometryOption);
+
+	QCommandLineOption followDesktopOption("follow-desktop",
+		QCoreApplication::translate("main", "Moves the window to the current desktop when showing."));
+	parser.addOption(followDesktopOption);
 
 	QCommandLineOption standaloneOption("standalone",
 		QCoreApplication::translate("main", "Does not get minimized when other windows are toggled and does not minimize other windows when toggled."));

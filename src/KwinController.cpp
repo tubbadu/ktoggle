@@ -16,10 +16,11 @@ KwinController::KwinController(QObject *parent) :
 
 int KwinController::run()
 {
-	return run(false);
+	return run(!false);
 }
 int KwinController::run(const bool &detached)
 {
+	qWarning() << "running...";
 	QProcess *process = new QProcess;
 	if(m_program.length() < 0){
 		qWarning() << "ERROR: trying to run program, but program is unspecified";
@@ -34,6 +35,8 @@ int KwinController::run(const bool &detached)
 	} else {
 		process->start();
 	}
+	applyGeometry();
+	qWarning() << "run!";
 	return process->processId();
 }
 
@@ -61,6 +64,12 @@ void KwinController::setIdentifier(const QString &id){
 }
 void KwinController::setStandalone(const bool &standalone){
 	m_standalone = standalone;
+}
+void KwinController::setForceGeometry(const bool &forceGeometry){
+	m_forceGeometry = forceGeometry;
+}
+void KwinController::setFollowDesktop(const bool &followDesktop){
+	m_followDesktop = followDesktop;
 }
 
 QString KwinController::identifier(){
@@ -92,7 +101,12 @@ void KwinController::addTrayIcon(const QString &icon){
 }
 
 bool KwinController::toggle(){
-	return kwin->toggle(m_class, m_name);
+	qWarning() << "toggling 1";
+	bool ret = kwin->toggle(m_class, m_name, true);
+	if(ret && m_forceGeometry){
+		applyGeometry();
+	}
+	return ret;
 }
 
 bool KwinController::show(){
@@ -103,8 +117,8 @@ bool KwinController::hide(){
 }
 
 bool KwinController::move(){
-	if(!m_pos.contains(".")){
-		qWarning() << "WARNING: position not specified correctly.";
+	if(!m_pos.contains(",")){
+		qWarning() << "WARNING: position not specified correctly." << m_pos;
 		return false;
 	} else {
 		QString x = m_pos.split(",")[0];
@@ -114,7 +128,7 @@ bool KwinController::move(){
 }
 
 bool KwinController::resize(){
-	if(!m_size.contains(".")){
+	if(!m_size.contains(",")){
 		qWarning() << "WARNING: size not specified correctly.";
 		return false;
 	} else {
@@ -125,10 +139,10 @@ bool KwinController::resize(){
 }
 
 bool KwinController::setGeometry(){
-	if(!m_size.contains(".")){
+	if(!m_size.contains(",")){
 		qWarning() << "WARNING: size not specified correctly.";
 		return false;
-	} else if(!m_size.contains(".")){
+	} else if(!m_size.contains(",")){
 		qWarning() << "WARNING: size not specified correctly.";
 		return false;
 	} else {
@@ -136,10 +150,11 @@ bool KwinController::setGeometry(){
 		QString y = m_pos.split(",")[1];
 		QString height = m_size.split(",")[0];
 		QString width = m_size.split(",")[1];
-		return kwin->setGeometry(m_class, m_name, x, y, height, width);
+		auto sg = kwin->setGeometry(m_class, m_name, x, y, height, width);
+		qWarning() << sg;
+		return sg;
 	}
 }
-
 
 void KwinController::menuAction(QAction *action){
 	if(action->text() == "Hide") {
@@ -162,4 +177,38 @@ void KwinController::trayIconClicked(){
 }
 void KwinController::test(){
 	kwin->test();
+}
+
+bool KwinController::applyGeometry(){
+	if(m_pos.length() > 2){
+		if(m_size.length() > 2){
+			for(int i=0; i<300; i++){
+				qWarning() << "a";
+				if(setGeometry()){
+					return true;
+				} else {
+					sleep(0.1);
+				}
+			}
+		} else {
+			for(int i=0; i<300; i++){
+				qWarning() << "b";
+				if(move()){
+					return true;
+				} else {
+					sleep(0.1);
+				}
+			}
+		}
+	} else if(m_size.length() > 2) {
+		for(int i=0; i<300; i++){
+			qWarning() << "c";
+			if(resize()){
+				return true;
+			} else {
+				sleep(0.1);
+			}
+		}
+	}
+	return false;
 }
