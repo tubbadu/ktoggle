@@ -20,7 +20,8 @@ class DbusKwin : public QObject
 public:
     explicit DbusKwin(QObject *parent = 0);
 
-	Q_INVOKABLE QStringList runScript(const QString filename);
+	Q_INVOKABLE QStringList runScript(const QString &filename);
+	Q_INVOKABLE QStringList runScript(const QString &filename, const bool &stopImediately);
 	Q_INVOKABLE QString createFile(const QString filecontent);
 	Q_INVOKABLE void test();
 	Q_INVOKABLE bool toggle(const QString wclass, const QString wname, const bool &followDesktop);

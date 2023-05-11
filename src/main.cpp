@@ -4,6 +4,8 @@
 #include <QCommandLineParser>
 
 #include "KwinController.h"
+#include "DbusKwin.h"
+
 
 KwinController* newKwinController(QCommandLineParser *parser, const QString &id){
 	KwinController *kwinController = new KwinController;

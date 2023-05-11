@@ -5,7 +5,7 @@ DbusKwin::DbusKwin(QObject *parent) :
 {
 }
 
-QStringList DbusKwin::runScript(const QString filename){
+QStringList DbusKwin::runScript(const QString &filename, const bool &stopImediately){
 	QString platform;
 	if(KWindowSystem::isPlatformWayland()){
 		platform = "/usr/bin/kwin_wayland";
@@ -19,7 +19,7 @@ QStringList DbusKwin::runScript(const QString filename){
 	QString since = datetime_now.toString(Qt::ISODateWithMs).replace("T", " ");
 
 	QProcess *kwin = new QProcess;
-	//QString filename = QCoreApplication::applicationDirPath() + "/listWindows.js";
+
 	kwin->setProgram("dbus-send");
 	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/Scripting" << "org.kde.kwin.Scripting.loadScript" << "string:" + filename);
 	kwin->start();
@@ -31,9 +31,11 @@ QStringList DbusKwin::runScript(const QString filename){
 	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.run");
 	kwin->start(); 
 	kwin->waitForFinished();
-	kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.stop");
-	kwin->start(); 
-	kwin->waitForFinished();
+	if(stopImediately){
+		kwin->setArguments(QStringList() << "--print-reply" << "--dest=org.kde.KWin" << "/" + script_number << "org.kde.kwin.Script.stop");
+		kwin->start(); 
+		kwin->waitForFinished();
+	}
 	
 	kwin->setProgram("journalctl");
 	kwin->setArguments(QStringList() << platform << "--since" << since);
@@ -50,6 +52,11 @@ QStringList DbusKwin::runScript(const QString filename){
 		return res;
 	}
 }
+
+QStringList DbusKwin::runScript(const QString &filename){
+	return runScript(filename, true);
+}
+
 
 QString DbusKwin::createFile(const QString filecontent){
 	m_temp = new QTemporaryFile();
@@ -196,8 +203,8 @@ bool DbusKwin::setGeometry(const QString wclass, const QString wname, const QStr
 			y: $Y, \
 			width: $WIDTH, \
 			height: $HEIGHT \
-			done = 1; \
 		}; \
+		done = 1; \
 	");
 	QString actionsInactive = actionsActive + "break;";
 	QString actionsEnd = QString("console.warn('>' + done);");
@@ -286,3 +293,32 @@ QString DbusKwin::composeScript(const QString &actionsBeginning, const QString &
 			} \
 		}" + actionsEnd);
 }
+
+
+/* alternative implementation using only js, has some problems
+
+
+	QString script(
+		"workspace.clientAdded.connect(function(client) { \
+			var wname = '$NAME'; \
+			var wclass = '$CLASS'; \
+			if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+				client.geometry = { \
+					x: $X, \
+					y: $Y, \
+					width: $WIDTH, \
+					height: $HEIGHT \
+				}; \
+			} \
+		});"
+	);
+	
+	script = script.replace("$X", x).replace("$Y", y).replace("$CLASS", wclass).replace("$NAME", wname);
+	runScript(createFile(script), false);
+
+	return true;
+	
+
+
+
+*/
