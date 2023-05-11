@@ -22,6 +22,4 @@ target_link_libraries(ktoggle
 	KF5::IconThemes
 	SingleApplication::SingleApplication
 	KF5::WindowSystem
-	KF5::WaylandClient
-	KF5::WaylandServer
 ) 

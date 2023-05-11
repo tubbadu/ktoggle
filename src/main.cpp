@@ -4,12 +4,6 @@
 #include <QCommandLineParser>
 
 #include "KwinController.h"
-#include "Embedder.h"
-
-#include <KWayland/Client/registry.h>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/plasmawindowmanagement.h>
-
 
 KwinController* newKwinController(QCommandLineParser *parser, const QString &id){
 	KwinController *kwinController = new KwinController;
@@ -27,10 +21,10 @@ KwinController* newKwinController(QCommandLineParser *parser, const QString &id)
 			kwinController->addTrayIcon(parser->value("icon"));
 		}
 		if(parser->isSet("size")){
-			kwinController->setProgram(parser->value("size"));
+			kwinController->setSize(parser->value("size"));
 		}
 		if(parser->isSet("xy")){			
-			kwinController->move(parser->value("xy"));
+			kwinController->setPosition(parser->value("xy"));
 		}
 		kwinController->setStandalone(parser->isSet("standalone"));
 	}
@@ -38,6 +32,36 @@ KwinController* newKwinController(QCommandLineParser *parser, const QString &id)
 	return kwinController;
 }
 
+bool setGeometry(KwinController *e, bool setPos, bool setSize){
+	if(setPos){
+		if(setSize){
+			for(int i=0; i<3000; i++){
+				if(e->setGeometry()){
+					return true;
+				} else {
+					sleep(0.1);
+				}
+			}
+		} else {
+			for(int i=0; i<3000; i++){
+				if(e->move()){
+					return true;
+				} else {
+					sleep(0.1);
+				}
+			}
+		}
+	} else if(setSize) {
+		for(int i=0; i<3000; i++){
+			if(e->resize()){
+				return true;
+			} else {
+				sleep(0.1);
+			}
+		}
+	}
+	return false;
+}
 
 bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const QString &id){
 	// minimize all and exit if run with --minimize-all
@@ -56,13 +80,14 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 		if(e->identifier() == id){
 			found = e;
 			if(!e->toggle()){
+				//window is present in wList but is not present in kwin (e.g.: telegram). Run it to raise it.
 				e->run();
 			}
 			break;
 		}
 	}
 
-	// minimize all other windows (not set as --standalone)
+	// minimize all other windows (not set as --standalone) (note: I cannot do this inside the loop before, because it may happens that a window is on top, gets minimized, the requested window gets on top, it gets toggled and so gets minimized)
 	for(KwinController *e : *wList){
 		if(e->identifier() != id && !e->isStandalone() && !parser->isSet("standalone")){
 			e->hide();
@@ -70,6 +95,7 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 	}
 
 	if(found){
+		setGeometry(found, parser->isSet("xy"), parser->isSet("size"));
 		return false;
 	} else {
 		// requested window is not present in wList. Add it
@@ -82,15 +108,13 @@ bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const
 		if(!newE->toggle()){
 			newE->run();
 		}
+		setGeometry(newE, parser->isSet("xy"), parser->isSet("size"));
 		return !true;
 	}
 }
 
 int main(int argc, char *argv[])
 {
-	
-
-
 	SingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	SingleApplication app(argc, argv, true);
 	KLocalizedString::setApplicationDomain("ktoggle");
@@ -98,35 +122,6 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationDomain(QStringLiteral("kde.org"));
 	QCoreApplication::setApplicationName(QStringLiteral("KToggle"));
 	QCoreApplication::setApplicationVersion("1.0");
-
-
-	KWayland::Client::Registry *registry = new KWayland::Client::Registry(&app);
-	KWayland::Client::PlasmaWindowManagement *p; // = registry->createPlasmaWindowManagement("org.kde.PlasmaShell", "1.0");
-	qWarning() << "helo";
-	//qWarning() << p->windows();
-
-
-
-
-	QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced, &app, [&](quint32 name, quint32 version) {
-		// Create a PlasmaShell object to access the list of windows
-		p = registry->createPlasmaWindowManagement(name, version, &app);
-		qWarning() << "added" << p->windows();
-		/*QObject::connect(shell, &KWayland::Client::PlasmaShell::surfaceAdded, &app, [](KWayland::Client::PlasmaShellSurface *surface) {
-			// Get the id of each window and print it to the console
-			auto windowId = surface->windowId();
-			qInfo() << "Window ID:" << windowId;
-		});*/
-	});
-
-	qWarning() << "exiting";
-	return app.exec();
-
-
-
-
-
-
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription("KToggle, a tool to toggle any app");

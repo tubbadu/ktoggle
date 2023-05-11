@@ -26,8 +26,8 @@ public:
     explicit KwinController(QObject *parent = 0);
     Q_INVOKABLE int run(const bool &detached);
     Q_INVOKABLE int run();
-	Q_INVOKABLE void setSize(const int &h, const int &w);
-	Q_INVOKABLE void setPosition(const int &x, const int &y);
+	Q_INVOKABLE void setSize(const QString &size);
+	Q_INVOKABLE void setPosition(const QString &pos);
 	Q_INVOKABLE void setProgram(const QString &program, const QStringList &args);
 	Q_INVOKABLE void setProgram(const QString &program);
 	Q_INVOKABLE void setClass(const QString &Class);
@@ -42,10 +42,10 @@ public:
 	Q_INVOKABLE bool toggle();
 	Q_INVOKABLE bool show();
 	Q_INVOKABLE bool hide();
-	Q_INVOKABLE void move(const QString &x, const QString &y);
-	Q_INVOKABLE void move(const QString &xy);
-	Q_INVOKABLE void resize(const QString &h, const QString &w);
-	Q_INVOKABLE void resize(const QString &size);
+	Q_INVOKABLE bool move();
+	Q_INVOKABLE bool resize();
+	Q_INVOKABLE bool setGeometry();
+	
 	Q_INVOKABLE void test();	
 	
 	void menuAction(QAction *action);
@@ -56,9 +56,8 @@ signals:
 
 private:
     QProcess *m_process;
-	QString m_wid;
-	QSize m_size;
-	QPoint m_pos;
+	QString m_size;
+	QString m_pos;
 	QString m_class, m_name;
 	QString m_program;
 	QStringList m_arguments;

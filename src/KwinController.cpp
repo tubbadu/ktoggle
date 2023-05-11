@@ -5,9 +5,8 @@ KwinController::KwinController(QObject *parent) :
 	m_process(new QProcess(this)),
 	kwin(new DbusKwin(this))
 {
-	m_wid = -1;
-	m_pos = QPoint(0, 0);
-	m_size = QSize(600, 500);
+	m_pos = "";
+	m_size = "";
 	m_class = "";
 	m_program = "";
 	m_arguments = QStringList();
@@ -45,11 +44,11 @@ void KwinController::setProgram(const QString &program, const QStringList &args)
 void KwinController::setProgram(const QString &program){
 	m_program = program;
 }
-void KwinController::setSize(const int &h, const int &w){
-	m_size = QSize(h, w);
+void KwinController::setSize(const QString &size){
+	m_size = size;
 }
-void KwinController::setPosition(const int &x, const int &y){
-	m_pos = QPoint(x, y);
+void KwinController::setPosition(const QString &pos){
+	m_pos = pos;
 }
 void KwinController::setClass(const QString &Class){
 	m_class = Class;
@@ -93,10 +92,6 @@ void KwinController::addTrayIcon(const QString &icon){
 }
 
 bool KwinController::toggle(){
-	if(false){
-		qWarning() << "moving";
-		move("30,30"); // not working
-	}
 	return kwin->toggle(m_class, m_name);
 }
 
@@ -106,6 +101,45 @@ bool KwinController::show(){
 bool KwinController::hide(){
 	return kwin->hide(m_class, m_name);
 }
+
+bool KwinController::move(){
+	if(!m_pos.contains(".")){
+		qWarning() << "WARNING: position not specified correctly.";
+		return false;
+	} else {
+		QString x = m_pos.split(",")[0];
+		QString y = m_pos.split(",")[1];
+		return kwin->move(m_class, m_name, x, y);
+	}
+}
+
+bool KwinController::resize(){
+	if(!m_size.contains(".")){
+		qWarning() << "WARNING: size not specified correctly.";
+		return false;
+	} else {
+		QString height = m_size.split(",")[0];
+		QString width = m_size.split(",")[1];
+		return kwin->resize(m_class, m_name, height, width);
+	}
+}
+
+bool KwinController::setGeometry(){
+	if(!m_size.contains(".")){
+		qWarning() << "WARNING: size not specified correctly.";
+		return false;
+	} else if(!m_size.contains(".")){
+		qWarning() << "WARNING: size not specified correctly.";
+		return false;
+	} else {
+		QString x = m_pos.split(",")[0];
+		QString y = m_pos.split(",")[1];
+		QString height = m_size.split(",")[0];
+		QString width = m_size.split(",")[1];
+		return kwin->setGeometry(m_class, m_name, x, y, height, width);
+	}
+}
+
 
 void KwinController::menuAction(QAction *action){
 	if(action->text() == "Hide") {
@@ -125,23 +159,6 @@ void KwinController::menuAction(QAction *action){
 }
 void KwinController::trayIconClicked(){
 	toggle();
-}
-
-void KwinController::move(const QString &x, const QString &y){
-	kwin->moveWindow(x, y);
-}
-void KwinController::resize(const QString &h, const QString &w){
-	kwin->resizeWindow(h, w);
-}
-void KwinController::move(const QString &xy){
-	QString x = xy.split(",")[0];
-	QString y = xy.split(",")[1];
-	kwin->moveWindow(x, y);
-}
-void KwinController::resize(const QString &size){
-	QString h = size.split(",")[0];
-	QString w = size.split(",")[1];
-	kwin->resizeWindow(h, w);
 }
 void KwinController::test(){
 	kwin->test();

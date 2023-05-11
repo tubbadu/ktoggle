@@ -241,8 +241,8 @@ void DbusKwin::test(){
 	);
 	QTextStream cout(stdout);
 	QStringList res = runScript(createFile(script));
-	cout << "\033[1m" + res[0] + "\033[0m"<< endl;
-	cout << res.mid(1).join("\n") << endl;
+	cout << "\033[1m" + res[0] + "\033[0m"<< Qt::endl;
+	cout << res.mid(1).join("\n") << Qt::endl;
 }
 
 bool DbusKwin::existsId(const QString wid){
@@ -295,6 +295,129 @@ bool DbusKwin::toggle(const QString wclass, const QString wname){
 		console.warn('>' + done);"
 	);
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
+	QStringList ret = runScript(createFile(script));
+
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DbusKwin::move(const QString wclass, const QString wname, const QString x, const QString y){
+	QString script(
+		"var wname = '$NAME'; \
+		var wclass = '$CLASS'; \
+		let done = 0; \
+		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			workspace.activeClient.geometry = { \
+				x: $X, \
+				y: $Y, \
+				width: workspace.activeClient.width, \
+				height: workspace.activeClient.height \
+			}; \
+			done = 1; \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					client.geometry = { \
+						x: $X, \
+						y: $Y, \
+						width: client.width, \
+						height: client.height \
+					}; \
+					done = 1; break; \
+				} \
+			} \
+		} \
+		console.warn('>' + done);"
+	);
+	script = script.replace("$X", x).replace("$Y", y).replace("$CLASS", wclass).replace("$NAME", wname);
+	QStringList ret = runScript(createFile(script));
+
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DbusKwin::resize(const QString wclass, const QString wname, const QString height, const QString width){
+	QString script(
+		"var wname = '$NAME'; \
+		var wclass = '$CLASS'; \
+		let done = 0; \
+		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			workspace.activeClient.geometry = { \
+				x: workspace.activeClient.x, \
+				y: workspace.activeClient.y, \
+				width: $WIDTH, \
+				height: $HEIGHT \
+			}; \
+			done = 1; \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					client.geometry = { \
+						x: client.x, \
+						y: client.y, \
+						width: $WIDTH, \
+						height: $HEIGHT \
+					}; \
+					done = 1; break; \
+				} \
+			} \
+		} \
+		console.warn('>' + done);"
+	);
+	script = script.replace("$WIDTH", width).replace("$HEIGHT", height).replace("$CLASS", wclass).replace("$NAME", wname);
+	QStringList ret = runScript(createFile(script));
+
+	if(ret.length() > 0){
+		if(ret[0] == "1") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DbusKwin::setGeometry(const QString wclass, const QString wname, const QString x, const QString y, const QString height, const QString width){
+	QString script(
+		"var wname = '$NAME'; \
+		var wclass = '$CLASS'; \
+		let done = 0; \
+		if(workspace.activeClient.resourceClass == wclass && workspace.activeClient.resourceName.includes(wname)){ \
+			workspace.activeClient.geometry = { \
+				x: $X, \
+				y: $Y, \
+				width: $WIDTH, \
+				height: $HEIGHT \
+			}; \
+			done = 1; \
+		} else { \
+			var clients = workspace.clientList(); \
+			for (var i = 0; i < clients.length; i++) { \
+				var client = clients[i]; \
+				if(client.resourceClass == wclass && client.resourceName.includes(wname)){ \
+					client.geometry = { \
+						x: $X, \
+						y: $Y, \
+						width: $WIDTH, \
+						height: $HEIGHT \
+					}; \
+					done = 1; break; \
+				} \
+			} \
+		} \
+		console.warn('>' + done);"
+	);
+	script = script.replace("$WIDTH", width).replace("$HEIGHT", height).replace("$X", x).replace("$Y", y).replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
 
 	if(ret.length() > 0){
