@@ -36,16 +36,26 @@ KwinController* newKwinController(QCommandLineParser *parser, const QString &id)
 	return kwinController;
 }
 
-bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser, const QString &id){
+bool newRequest(QList<KwinController*> *wList, QCommandLineParser *parser){
 	// minimize all and exit if run with --minimize-all
 	if(parser->isSet("minimize-all")){ 
+		qWarning() << "minimizing all!";
 		for(KwinController *e : *wList){
 			if(!e->isStandalone()){
 				e->hide();
+				qWarning() << "this one";
+			} else {
+				qWarning() << "this one no";
 			}
 		}
 		return false;
 	}
+
+	if(!parser->isSet("class") || !parser->isSet("name")){
+		qWarning() << "ERROR: class and name cannot be unspecified";
+		parser->showHelp();
+	}
+	QString id(parser->value("class") + "~" + parser->value("name"));
 
 	// find and toggle or run the requested window in wList
 	KwinController *found = nullptr;
@@ -164,8 +174,8 @@ int main(int argc, char *argv[])
 		dataStreamWrite << QCoreApplication::arguments();
 		app.sendMessage(data);
 		qWarning() << "App already running.";
-		qWarning() << "Primary instance PID: " << app.primaryPid();
-		qWarning() << "Primary instance user: " << app.primaryUser();
+		//qWarning() << "Primary instance PID: " << app.primaryPid();
+		//qWarning() << "Primary instance user: " << app.primaryUser();
 		return 0;
 	}
 
@@ -177,18 +187,20 @@ int main(int argc, char *argv[])
 	
 
 
+	
+
+
 	QList<KwinController*> wList;
 
-	newRequest(&wList, &parser, QString(QCoreApplication::arguments().mid(1).join(" ")));
+	newRequest(&wList, &parser);
 	
 
 	QObject::connect( &app, &SingleApplication::receivedMessage, [&parser, &wList](int instanceId, QByteArray message) {
 		QDataStream dataStreamRead(message);
 		QStringList args;
 		dataStreamRead >> args;
-		qWarning() << "args received" << args;
 		parser.process(args);
-		newRequest(&wList, &parser, QString(args.mid(1).join(" ")));
+		newRequest(&wList, &parser);
 	});
 	
 	return app.exec();

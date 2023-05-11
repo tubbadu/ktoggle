@@ -101,7 +101,6 @@ void KwinController::addTrayIcon(const QString &icon){
 }
 
 bool KwinController::toggle(){
-	qWarning() << "toggling 1";
 	bool ret = kwin->toggle(m_class, m_name, true);
 	if(ret && m_forceGeometry){
 		applyGeometry();
