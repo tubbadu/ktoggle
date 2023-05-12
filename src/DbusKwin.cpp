@@ -119,6 +119,7 @@ bool DbusKwin::toggle(const QString wclass, const QString wname, const bool &fol
 
 	script = script.replace("$CLASS", wclass).replace("$NAME", wname);
 	QStringList ret = runScript(createFile(script));
+	qWarning() << "ret" << ret;
 	if(ret.length() > 0){
 		if(ret[0] == "1") {
 			return true;
