@@ -1,5 +1,8 @@
 # KToggle
 
+
+## NOTE: I moved this repo on codeberg: https://codeberg.org/tubbadu/ktoggle
+
 > NOTE: it's a work in progress!
 
 KToggle is a tool to quickly toggle the visibility of your favourite windows with a single keystroke! It instantly raises the window and give it keyboard focus, or minimize it if it's already the active window!
